@@ -10,8 +10,8 @@
 
         public string Bs { get; set; }
 
-        public int UserId { get; set; }
+        public string AppUserId { get; set; }
 
-        public User User { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }
