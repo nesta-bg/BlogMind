@@ -1,4 +1,6 @@
-﻿using BlogMind.Models;
+﻿using AutoMapper;
+using BlogMind.Controllers.Resources;
+using BlogMind.Models;
 using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +13,22 @@ namespace BlogMind.Controllers
     public class AppUsersController : Controller
     {
         private readonly BlogDbContext context;
+        private readonly IMapper mapper;
 
-        public AppUsersController(BlogDbContext context)
+        public AppUsersController(BlogDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<AppUser>> GetUsers()
+        public async Task<IEnumerable<AppUserResource>> GetUsers()
         {
-            return await context.AppUsers
+            var appusers = await context.AppUsers
                 .Include(u => u.Address)
-                .Include(u => u.Company)
                 .ToListAsync();
+
+            return mapper.Map<List<AppUser>, List<AppUserResource>>(appusers);
         }
     }
 }
