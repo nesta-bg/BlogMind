@@ -17,6 +17,25 @@ namespace BlogMind.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Address>()
+               .ToTable("Addresses");
+
+            builder.Entity<Address>()
+               .HasOne(a => a.AppUser)
+               .WithOne(u => u.Address)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+               .ToTable("Companies");
+
+            builder.Entity<Company>()
+              .HasOne(c => c.AppUser)
+              .WithOne(u => u.Company)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Geo>()
+                .ToTable("Geos");
         }
     }
 }
