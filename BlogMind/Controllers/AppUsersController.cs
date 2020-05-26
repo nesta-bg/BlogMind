@@ -30,5 +30,23 @@ namespace BlogMind.Controllers
 
             return mapper.Map<List<AppUser>, List<AppUserResource>>(appusers);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] AppUserResource appuserResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var appuser = mapper.Map<AppUserResource, AppUser>(appuserResource);
+
+            context.AppUsers.Add(appuser);
+            await context.SaveChangesAsync();
+
+            appuser = await context.AppUsers.Include(u => u.Address).SingleOrDefaultAsync(u => u.Id == appuser.Id);
+
+            var result = mapper.Map<AppUser, AppUserResource>(appuser);
+
+            return Ok(result);
+        }
     }
 }

@@ -10,6 +10,9 @@ namespace BlogMind.Mapping
         {
             CreateMap<AppUser, AppUserResource>();
             CreateMap<Address, AddressResource>();
+
+            CreateMap<AppUserResource, AppUser>();
+            CreateMap<AddressResource, Address>();
         }
     }
 }
