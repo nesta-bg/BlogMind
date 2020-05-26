@@ -36,6 +36,16 @@ namespace BlogMind.Persistence
 
             builder.Entity<Geo>()
                 .ToTable("Geos");
+
+            builder.Entity<AppUser>()
+               .Property(u => u.Name)
+               .IsRequired()
+               .HasMaxLength(155);
+
+            builder.Entity<AppUser>()
+                .Property(u => u.Email)
+                .IsRequired()
+                .HasMaxLength(155);
         }
     }
 }
