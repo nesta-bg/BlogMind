@@ -7,6 +7,7 @@ import { HomeComponent } from './home.component';
 import { UsersComponent } from './users.component';
 import { PostsComponent } from './posts.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
