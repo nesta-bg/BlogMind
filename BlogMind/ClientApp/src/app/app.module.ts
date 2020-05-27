@@ -10,6 +10,7 @@ import { PostsComponent } from './posts.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { UserFormComponent } from './user-form.component';
+import { CanDeactivateGuardService } from './can-deactivate-guard.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { UserFormComponent } from './user-form.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [CanDeactivateGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,11 +6,17 @@ import { UsersComponent } from './users.component';
 import { PostsComponent } from './posts.component';
 import { UserFormComponent } from './user-form.component';
 
+import { CanDeactivateGuardService } from './can-deactivate-guard.service';
+
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'users', component: UsersComponent },
-    { path: 'users/new', component: UserFormComponent },
+    {
+        path: 'users/new',
+        component: UserFormComponent,
+        canDeactivate: [ CanDeactivateGuardService ]
+    },
     { path: 'posts', component: PostsComponent },
     { path: '**', redirectTo: 'home' }
 ];
