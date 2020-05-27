@@ -13,4 +13,8 @@ export class UserService {
   getUsers() {
     return this.httpClient.get<User[]>(this.url);
   }
+
+  addUser(user) {
+    return this.httpClient.post(this.url, user);
+  }
 }

@@ -1,6 +1,6 @@
 <h2>Add a User</h2>
 <div class="col col-lg-6 bg-light">
-    <form [formGroup]="userForm">
+    <form [formGroup]="userForm" (ngSubmit)="save()">
         <div class="form-group">
             <h3>User</h3>
             <label for="name"><strong>Name</strong></label>

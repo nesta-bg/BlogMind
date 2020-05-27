@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BasicValidators } from './shared/basicValidators';
 import { CanComponentDeactivate } from './can-deactivate-guard.service';
 import { Observable } from 'rxjs';
+import { UserService } from './user.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './user-form.component.html'
@@ -10,7 +12,7 @@ import { Observable } from 'rxjs';
 export class UserFormComponent implements OnInit, CanComponentDeactivate {
   userForm: FormGroup;
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private service: UserService, private router: Router) {
     this.userForm = fb.group({
       name: ['', Validators.required],
       email: ['', BasicValidators.email],
@@ -34,4 +36,11 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     return true;
   }
 
+  save() {
+    this.service.addUser(this.userForm.value)
+      .subscribe(x => {
+        this.userForm.markAsPristine();
+        this.router.navigate(['users']);
+      });
+  }
 }
