@@ -84,5 +84,19 @@ namespace BlogMind.Controllers
 
             return Ok(mapper.Map<AppUser, AppUserResource>(appuser));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var appuser = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == id);
+
+            if (appuser == null)
+                return NotFound();
+
+            context.AppUsers.Remove(appuser);
+            await context.SaveChangesAsync();
+
+            return Ok(id);
+        }
     }
 }
