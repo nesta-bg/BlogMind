@@ -5,6 +5,7 @@ import { HomeComponent } from './home.component';
 import { UsersComponent } from './users.component';
 import { PostsComponent } from './posts.component';
 import { UserFormComponent } from './user-form.component';
+import { NotFoundComponent } from './not-found.component';
 
 import { CanDeactivateGuardService } from './can-deactivate-guard.service';
 
@@ -17,7 +18,13 @@ const routes: Routes = [
         component: UserFormComponent,
         canDeactivate: [ CanDeactivateGuardService ]
     },
+    {
+        path: 'users/:id',
+        component: UserFormComponent,
+        canDeactivate: [ CanDeactivateGuardService ]
+    },
     { path: 'posts', component: PostsComponent },
+    { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: 'home' }
 ];
 

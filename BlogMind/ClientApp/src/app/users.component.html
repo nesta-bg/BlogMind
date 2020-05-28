@@ -15,7 +15,7 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.address.city }}</td>
-            <td><i class="fa fa-pencil-square-o"></i></td>
+            <td><a [routerLink]="['/users', user.id]"><i class="fa fa-pencil-square-o"></i></a></td>
             <td><i class="fa fa-trash"></i></td>
         </tr>
     </tbody>

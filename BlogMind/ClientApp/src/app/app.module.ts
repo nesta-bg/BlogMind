@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { UserFormComponent } from './user-form.component';
 import { CanDeactivateGuardService } from './can-deactivate-guard.service';
+import { NotFoundComponent } from './not-found.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CanDeactivateGuardService } from './can-deactivate-guard.service';
     HomeComponent,
     UsersComponent,
     PostsComponent,
-    UserFormComponent
+    UserFormComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
