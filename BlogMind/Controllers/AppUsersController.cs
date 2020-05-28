@@ -57,11 +57,32 @@ namespace BlogMind.Controllers
             context.AppUsers.Add(appuser);
             await context.SaveChangesAsync();
 
-            appuser = await context.AppUsers.Include(u => u.Address).SingleOrDefaultAsync(u => u.Id == appuser.Id);
+            appuser = await context.AppUsers
+                .Include(u => u.Address)
+                .SingleOrDefaultAsync(u => u.Id == appuser.Id);
 
             var result = mapper.Map<AppUser, AppUserResource>(appuser);
 
             return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] AppUserResource appuserResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var appuser = await context.AppUsers
+                .Include(u => u.Address)
+                .SingleOrDefaultAsync(u => u.Id == id);
+
+            if (appuser == null)
+                return NotFound();
+
+            mapper.Map(appuserResource, appuser);
+            await context.SaveChangesAsync();
+
+            return Ok(mapper.Map<AppUser, AppUserResource>(appuser));
         }
     }
 }
