@@ -13,7 +13,7 @@ namespace BlogMind.Controllers.Resources
         [EmailAddress]
         public string Email { get; set; }
 
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         public AddressResource Address { get; set; }
     }

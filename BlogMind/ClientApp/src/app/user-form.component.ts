@@ -18,7 +18,7 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     this.userForm = fb.group({
       name: ['', Validators.required],
       email: ['', BasicValidators.email],
-      phone: [''],
+      phoneNumber: [''],
       address: fb.group({
         street: [''],
         suite: [''],
@@ -51,7 +51,7 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     this.userForm.setValue({
       name: user.name,
       email: user.email,
-      phone: user.phone,
+      phoneNumber: user.phoneNumber,
       address: {
         street: user.address.street,
         suite: user.address.suite,
