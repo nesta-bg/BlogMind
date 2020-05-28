@@ -21,6 +21,21 @@ namespace BlogMind.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(string id)
+        {
+            var appuser = await context.AppUsers
+                .Include(u => u.Address)
+                .SingleOrDefaultAsync(u => u.Id == id);
+
+            if (appuser == null)
+                return NotFound();
+
+            var appuserResource = mapper.Map<AppUser, AppUserResource>(appuser);
+
+            return Ok(appuserResource);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<AppUserResource>> GetUsers()
         {
