@@ -13,6 +13,7 @@ import { User, Address } from './user';
 export class UserFormComponent implements OnInit, CanComponentDeactivate {
   userForm: FormGroup;
   title: string;
+  id: string;
 
   constructor(fb: FormBuilder, private service: UserService, private router: Router, private route: ActivatedRoute) {
     this.userForm = fb.group({
@@ -29,14 +30,14 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-    this.title = id ? 'Edit User' : 'New User';
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.title = this.id ? 'Edit User' : 'New User';
 
-    if (!id) {
+    if (!this.id) {
       return;
     }
 
-    this.service.getUser(id)
+    this.service.getUser(this.id)
       .subscribe(
         (user: User) => this.editUser(user),
 
@@ -69,11 +70,35 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     return true;
   }
 
+  // save() {
+  //   if (this.id) {
+  //     this.service.updateUser(this.id, this.userForm.value)
+  //       .subscribe(x => {
+  //         this.userForm.markAsPristine();
+  //         this.router.navigate(['users']);
+  //       });
+  //   } else {
+  //     this.service.addUser(this.userForm.value)
+  //       .subscribe(x => {
+  //         this.userForm.markAsPristine();
+  //         this.router.navigate(['users']);
+  //       });
+  //   }
+  // }
+
   save() {
-    this.service.addUser(this.userForm.value)
-      .subscribe(x => {
-        this.userForm.markAsPristine();
-        this.router.navigate(['users']);
-      });
+    let result;
+
+    if (this.id) {
+      result = this.service.updateUser(this.id, this.userForm.value);
+    } else {
+      result = this.service.addUser(this.userForm.value);
+    }
+
+    result.subscribe(x => {
+      this.userForm.markAsPristine();
+      this.router.navigate(['users']);
+    });
   }
+
 }

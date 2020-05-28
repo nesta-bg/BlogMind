@@ -8,10 +8,14 @@ import { User } from './user';
 export class UserService {
   private url = 'https://localhost:44394/api/appusers';
 
+  private getUserUrl(userId) {
+    return this.url + '/' + userId;
+  }
+
   constructor(private httpClient: HttpClient) { }
 
   getUser(userId) {
-    return this.httpClient.get<User>(this.url + '/' + userId);
+    return this.httpClient.get<User>(this.getUserUrl(userId));
   }
 
   getUsers() {
@@ -20,5 +24,9 @@ export class UserService {
 
   addUser(user) {
     return this.httpClient.post(this.url, user);
+  }
+
+  updateUser(id, user) {
+    return this.httpClient.put(this.getUserUrl(id), user);
   }
 }
