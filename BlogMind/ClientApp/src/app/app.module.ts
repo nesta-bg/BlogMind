@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserFormComponent } from './user-form.component';
 import { CanDeactivateGuardService } from './can-deactivate-guard.service';
 import { NotFoundComponent } from './not-found.component';
+import { SpinnerComponent } from './shared/spinner.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NotFoundComponent } from './not-found.component';
     UsersComponent,
     PostsComponent,
     UserFormComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
