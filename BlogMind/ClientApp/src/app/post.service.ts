@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from './post';
+import { delay } from 'rxjs/operators';
+
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +14,7 @@ export class PostService {
     }
 
     getPosts() {
-        return this.httpClient.get<Post[]>(this.url);
+        return this.httpClient.get<Post[]>(this.url)
+            .pipe(delay(300));
     }
 }
