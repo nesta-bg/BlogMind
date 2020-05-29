@@ -8,6 +8,8 @@ namespace BlogMind.Persistence
     {
         public DbSet<AppUser> AppUsers { get; set; }
 
+        public DbSet<Post> Posts { get; set; }
+
         public BlogDbContext(DbContextOptions<BlogDbContext> options)
             : base(options)
         {
@@ -46,6 +48,15 @@ namespace BlogMind.Persistence
                 .Property(u => u.Email)
                 .IsRequired()
                 .HasMaxLength(155);
+
+            builder.Entity<Post>()
+                .Property(p => p.AppUserId)
+                .IsRequired();
+
+            builder.Entity<Post>()
+              .HasOne(p => p.AppUser)
+              .WithMany()
+              .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
