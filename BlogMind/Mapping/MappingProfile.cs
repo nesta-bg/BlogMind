@@ -10,6 +10,7 @@ namespace BlogMind.Mapping
         {
             CreateMap<AppUser, AppUserResource>();
             CreateMap<Address, AddressResource>();
+            CreateMap<Post, PostResource>();
 
             CreateMap<AppUserResource, AppUser>()
                 .ForMember(u => u.Id, opt => opt.Ignore());
