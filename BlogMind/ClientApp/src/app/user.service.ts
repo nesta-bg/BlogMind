@@ -29,4 +29,9 @@ export class UserService {
   updateUser(id, user) {
     return this.httpClient.put(this.getUserUrl(id), user);
   }
+
+  deleteUser(userId) {
+    return this.httpClient.delete(this.getUserUrl(userId));
+  }
 }
+

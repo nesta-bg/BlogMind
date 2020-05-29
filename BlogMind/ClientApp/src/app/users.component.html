@@ -16,7 +16,7 @@
             <td>{{ user.email }}</td>
             <td>{{ user.address.city }}</td>
             <td><a [routerLink]="['/users', user.id]"><i class="fa fa-pencil-square-o"></i></a></td>
-            <td><i class="fa fa-trash"></i></td>
+            <td><i (click)="deleteUser(user)" class="fa fa-trash"></i></td>
         </tr>
     </tbody>
 </table>

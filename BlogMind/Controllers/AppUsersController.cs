@@ -96,7 +96,11 @@ namespace BlogMind.Controllers
             context.AppUsers.Remove(appuser);
             await context.SaveChangesAsync();
 
-            return Ok(id);
+            //return Ok(id);
+            //Trying to Parse a String
+            //SyntaxError: Unexpected token * in JSON at position *
+
+            return Ok();
         }
     }
 }

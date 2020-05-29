@@ -1,4 +1,5 @@
 export interface Address {
+    id: number;
     street: string;
     suite: string;
     city: string;
@@ -6,6 +7,7 @@ export interface Address {
 }
 
 export interface User {
+    id: string;
     name: string;
     email: string;
     address: Address;
