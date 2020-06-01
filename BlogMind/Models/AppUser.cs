@@ -11,5 +11,7 @@ namespace BlogMind.Models
         public string Website { get; set; }
 
         public Company Company { get; set; }
+
+        public string Photo { get; set; }
     }
 }
