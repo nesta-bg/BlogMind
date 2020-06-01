@@ -24,7 +24,9 @@ namespace BlogMind.Controllers
         [HttpGet]
         public async Task<IEnumerable<PostResource>> GetPosts()
         {
-            var posts = await context.Posts.ToListAsync();
+            var posts = await context.Posts
+                .Include(p => p.Comments)
+                .ToListAsync();
 
             return mapper.Map<List<Post>, List<PostResource>>(posts);
         }

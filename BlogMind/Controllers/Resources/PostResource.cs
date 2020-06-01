@@ -1,4 +1,7 @@
-﻿namespace BlogMind.Controllers.Resources
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace BlogMind.Controllers.Resources
 {
     public class PostResource
     {
@@ -9,5 +12,12 @@
         public string Body { get; set; }
 
         public string AppUserId { get; set; }
+
+        public ICollection<CommentResource> Comments { get; set; }
+
+        public PostResource()
+        {
+            Comments = new Collection<CommentResource>();
+        }
     }
 }
