@@ -57,6 +57,25 @@ namespace BlogMind.Persistence
               .HasOne(p => p.AppUser)
               .WithMany()
               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>()
+                .ToTable("Comments");
+
+            builder.Entity<Comment>()
+              .Property(c => c.AppUserId)
+              .IsRequired();
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.AppUser)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

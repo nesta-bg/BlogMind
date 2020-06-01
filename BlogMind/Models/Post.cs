@@ -1,4 +1,7 @@
-﻿namespace BlogMind.Models
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace BlogMind.Models
 {
     public class Post
     {
@@ -11,5 +14,12 @@
         public string AppUserId { get; set; }
 
         public AppUser AppUser { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
+
+        public Post()
+        {
+            Comments = new Collection<Comment>();
+        }
     }
 }
