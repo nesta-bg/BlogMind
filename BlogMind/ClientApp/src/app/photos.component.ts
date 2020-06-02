@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PhotoService } from './photo.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   template: `
@@ -14,7 +15,11 @@ export class PhotosComponent implements OnInit {
   id: string;
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  constructor(private photoService: PhotoService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private photoService: PhotoService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -25,6 +30,7 @@ export class PhotosComponent implements OnInit {
 
     this.photoService.upload(this.id, nativeElement.files[0])
       .subscribe(x => {
+        this.toastr.success('User\'s Photo Was Uploaded Successfully!', 'Success');
         this.router.navigate(['users']);
       });
   }

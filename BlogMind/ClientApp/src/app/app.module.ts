@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar.component';
@@ -31,7 +33,15 @@ import { PhotosComponent } from './photos.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      timeOut: 2000,
+      closeButton: true,
+      progressBar: true,
+      progressAnimation: 'increasing'
+    })
   ],
   providers: [CanDeactivateGuardService],
   bootstrap: [AppComponent]
