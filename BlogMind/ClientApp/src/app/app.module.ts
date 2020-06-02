@@ -13,6 +13,7 @@ import { UserFormComponent } from './user-form.component';
 import { CanDeactivateGuardService } from './can-deactivate-guard.service';
 import { NotFoundComponent } from './not-found.component';
 import { SpinnerComponent } from './shared/spinner.component';
+import { PhotosComponent } from './photos.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SpinnerComponent } from './shared/spinner.component';
     PostsComponent,
     UserFormComponent,
     NotFoundComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    PhotosComponent
   ],
   imports: [
     BrowserModule,

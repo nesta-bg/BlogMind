@@ -18,9 +18,6 @@ namespace BlogMind.Controllers
         private readonly IHostingEnvironment host;
         private readonly PhotoSettings photoSettings;
 
-        private readonly int MAX_BYTES = 1 * 1024 * 1024;
-        private readonly string[] ACCEPTED_FILE_TYPES = new[] { ".jpg", ".jpeg", ".png" };
-
         public PhotosController(BlogDbContext context, IHostingEnvironment host, IOptionsSnapshot<PhotoSettings> options)
         {
             this.context = context;

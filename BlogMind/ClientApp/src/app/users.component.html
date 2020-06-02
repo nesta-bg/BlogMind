@@ -6,6 +6,7 @@
             <td>Name</td>
             <td>Email</td>
             <td>City</td>
+            <td>Photo</td>
             <td>Edit</td>
             <td>Delete</td>
         </tr>
@@ -15,6 +16,7 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.address.city }}</td>
+            <td><a [routerLink]="['/users', user.id, 'photo']"><i class="fa fa-file-image-o"></i></a></td>
             <td><a [routerLink]="['/users', user.id]"><i class="fa fa-pencil-square-o"></i></a></td>
             <td><i (click)="deleteUser(user)" class="fa fa-trash"></i></td>
         </tr>
