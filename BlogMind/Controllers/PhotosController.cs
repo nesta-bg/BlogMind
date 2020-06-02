@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogMind.Controllers
@@ -14,6 +15,9 @@ namespace BlogMind.Controllers
     {
         private readonly BlogDbContext context;
         private readonly IHostingEnvironment host;
+
+        private readonly int MAX_BYTES = 1 * 1024 * 1024;
+        private readonly string[] ACCEPTED_FILE_TYPES = new[] { ".jpg", ".jpeg", ".png" };
 
         public PhotosController(BlogDbContext context, IHostingEnvironment host)
         {
@@ -28,6 +32,11 @@ namespace BlogMind.Controllers
 
             if (appuser == null)
                 return NotFound();
+
+            if (file == null) return BadRequest("Null file");
+            if (file.Length == 0) return BadRequest("Empty file");
+            if (file.Length > MAX_BYTES) return BadRequest("Max file size exceeded");
+            if (!ACCEPTED_FILE_TYPES.Any(s => s == Path.GetExtension(file.FileName))) return BadRequest("Invalid file type.");
 
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
 
