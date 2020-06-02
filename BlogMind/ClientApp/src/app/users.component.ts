@@ -4,10 +4,16 @@ import { UserService } from './user.service';
 
 @Component({
   templateUrl: './users.component.html',
-  styles: []
+  styles: [`
+  .main-img {
+    width: 25px;
+    height: 25px;
+  }
+`]
 })
 export class UsersComponent implements OnInit {
   users: User[] = [];
+  userImgUrl = 'https://localhost:44394/uploads/';
 
   constructor(private userService: UserService) { }
 

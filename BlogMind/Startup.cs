@@ -68,6 +68,7 @@ namespace BlogMind
 
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
