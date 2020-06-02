@@ -32,6 +32,9 @@ export class PhotosComponent implements OnInit {
       .subscribe(x => {
         this.toastr.success('User\'s Photo Was Uploaded Successfully!', 'Success');
         this.router.navigate(['users']);
+      },
+      err => {
+        this.toastr.error(err, 'Error');
       });
   }
 
