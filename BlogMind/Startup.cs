@@ -41,6 +41,8 @@ namespace BlogMind
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
