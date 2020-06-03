@@ -10,7 +10,7 @@ import { Comment } from './comment';
 })
 export class PostsComponent implements OnInit {
   posts: Post[] = [];
-  isLoading = true;
+  postsLoading = true;
   currentPost: Post = null;
   userImgUrl = 'https://localhost:44394/uploads/';
   comments: Comment[] = [];
@@ -23,7 +23,7 @@ export class PostsComponent implements OnInit {
       .subscribe(
         posts => this.posts = posts,
         () => null,
-        () => { this.isLoading = false; }
+        () => { this.postsLoading = false; }
       );
   }
 
