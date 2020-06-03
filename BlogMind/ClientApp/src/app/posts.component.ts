@@ -10,6 +10,7 @@ export class PostsComponent implements OnInit {
   posts: Post[] = [];
   isLoading = true;
   currentPost: Post = null;
+  userImgUrl = 'https://localhost:44394/uploads/';
 
   constructor(private postService: PostService) { }
 

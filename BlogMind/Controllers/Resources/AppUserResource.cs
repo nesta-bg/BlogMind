@@ -18,5 +18,7 @@ namespace BlogMind.Controllers.Resources
         public AddressResource Address { get; set; }
 
         public string Photo { get; set; }
+
+        public string UserName { get; set; }
     }
 }

@@ -7,7 +7,7 @@ import { User } from './user';
 
 @Component({
   template: `
-  <h2>Add a Photo</h2>
+  <h2>Add a Photo (60x60)</h2>
   <div>
     <input type="file" (change)="uploadPhoto()" #fileInput>
   </div>

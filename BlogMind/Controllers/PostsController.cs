@@ -26,6 +26,7 @@ namespace BlogMind.Controllers
         {
             var posts = await context.Posts
                 .Include(p => p.Comments)
+                .ThenInclude(c => c.AppUser)
                 .ToListAsync();
 
             return mapper.Map<List<Post>, List<PostResource>>(posts);

@@ -18,7 +18,9 @@
                 <li class="list-group-item">{{ currentPost.body }}</li>
             </ul>
             <div *ngFor="let comment of currentPost.comments" class="media border p-3">
+                <img [src]="comment.appUser.photo ? userImgUrl + comment.appUser.photo : userImgUrl + 'no-image.png'" alt="" class="mr-3 mt-3 rounded-circle thumbnail"> 
                 <div class="media-body">
+                    <i><h5 class="handle">{{ comment.appUser.userName ? comment.appUser.userName : comment.appUser.email }}</h5></i>
                     <p>{{ comment.body }}</p>
                 </div>
             </div>
