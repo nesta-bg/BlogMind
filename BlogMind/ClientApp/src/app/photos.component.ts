@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from './user.service';
 import { User } from './user';
 
-
 @Component({
   template: `
   <h2>Add a Photo</h2>
@@ -13,6 +12,9 @@ import { User } from './user';
     <input type="file" (change)="uploadPhoto()" #fileInput>
   </div>
   <img [src]="user?.photo ? userImgUrl + user.photo : userImgUrl + 'no-image.png'" class="img-thumbnail mt-2">
+  <div *ngIf="user?.photo != null">
+    <i (click)="deletePhoto(user?.id)" class="btn btn-danger mt-1">Delete The Photo</i>
+  </div>
   `
 })
 export class PhotosComponent implements OnInit {
@@ -45,6 +47,18 @@ export class PhotosComponent implements OnInit {
       },
       err => {
         this.toastr.error(err, 'Error');
+      });
+  }
+
+  deletePhoto(userId) {
+    this.photoService.delete(userId)
+      .subscribe(x => {
+        // console.log(x);
+        this.toastr.success('User\'s Photo Was Deleted Successfully!', 'Success');
+        this.router.navigate(['users']);
+      },
+      err => {
+        this.toastr.error('User\'s Photo Was Not Deleted!', 'Error');
       });
   }
 

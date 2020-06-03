@@ -14,7 +14,15 @@ export class PhotoService {
   upload(userId, photo) {
     let formData = new FormData();
     formData.append('file', photo);
-    return this.httpClient.post(this.url + '/' + userId + '/photo', formData )
+    return this.httpClient.post(this.url + '/' + userId + '/photo', formData)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
+
+  delete(userId) {
+    return this.httpClient.put(this.url + '/' + userId + '/photo', userId)
       .pipe(
         retry(3),
         catchError(this.handleError)

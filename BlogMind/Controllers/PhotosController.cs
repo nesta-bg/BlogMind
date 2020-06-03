@@ -56,5 +56,31 @@ namespace BlogMind.Controllers
 
             return Ok();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Delete(string appuserId)
+        {
+            var appuser = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == appuserId);
+
+            if (appuser == null)
+                return NotFound();
+
+            var fileName = appuser.Photo;
+            var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
+            
+            var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+            var fileInfo = new FileInfo(filePath);
+
+            if (fileInfo != null) {
+                System.IO.File.Delete(filePath);
+                fileInfo.Delete();
+            }
+            
+            appuser.Photo = null;
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
