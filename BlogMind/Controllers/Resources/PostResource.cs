@@ -13,11 +13,5 @@ namespace BlogMind.Controllers.Resources
 
         public string AppUserId { get; set; }
 
-        public ICollection<CommentResource> Comments { get; set; }
-
-        public PostResource()
-        {
-            Comments = new Collection<CommentResource>();
-        }
     }
 }

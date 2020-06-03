@@ -5,29 +5,32 @@ using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogMind.Controllers
 {
-    [Route("api/[controller]")]
-    public class PostsController : Controller
+    [Route("api/[controller]/postId")]
+    public class CommentsController : Controller
     {
         private readonly BlogDbContext context;
         private readonly IMapper mapper;
 
-        public PostsController(BlogDbContext context, IMapper mapper)
+        public CommentsController(BlogDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<PostResource>> GetPosts()
+        [HttpGet("{id}")]
+        public async Task<IEnumerable<CommentResource>> GetComments(int id)
         {
-            var posts = await context.Posts
+            var comments = await context.Comments
+                .Include(c => c.AppUser)
+                .Where(c => c.PostId == id)
                 .ToListAsync();
 
-            return mapper.Map<List<Post>, List<PostResource>>(posts);
+            return mapper.Map<List<Comment>, List<CommentResource>>(comments);
         }
     }
 }
