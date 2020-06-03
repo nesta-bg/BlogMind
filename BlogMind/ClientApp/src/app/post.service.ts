@@ -17,4 +17,9 @@ export class PostService {
         return this.httpClient.get<Post[]>(this.url)
             .pipe(delay(300));
     }
+
+    getPostsByUser(userId) {
+        return this.httpClient.get<Post[]>(this.url + '/' + userId)
+            .pipe(delay(300));
+    }
 }
