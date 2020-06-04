@@ -16,6 +16,7 @@ import { CanDeactivateGuardService } from './can-deactivate-guard.service';
 import { NotFoundComponent } from './not-found.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { PhotosComponent } from './photos.component';
+import { PaginationComponent } from './shared/pagination.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PhotosComponent } from './photos.component';
     UserFormComponent,
     NotFoundComponent,
     SpinnerComponent,
-    PhotosComponent
+    PhotosComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

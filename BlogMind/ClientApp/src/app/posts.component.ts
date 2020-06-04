@@ -12,6 +12,8 @@ import { User } from './user';
 })
 export class PostsComponent implements OnInit {
   posts: Post[] = [];
+  pageSize = 5;
+  pagedPosts: Post[] = [];
   postsLoading = true;
   currentPost: Post = null;
   userImgUrl = 'https://localhost:44394/uploads/';
@@ -39,7 +41,9 @@ export class PostsComponent implements OnInit {
   loadPosts() {
     this.postService.getPosts()
       .subscribe(
-        posts => this.posts = posts,
+        posts => { this.posts = posts,
+        this.pagedPosts = this.getPostsInPage(1);
+        },
         () => null,
         () => { this.postsLoading = false; }
       );
@@ -57,14 +61,33 @@ export class PostsComponent implements OnInit {
   }
 
   loadPostsByUser(userId) {
-    this.posts = null;
+    this.posts = [];
 
     this.postService.getPostsByUser(userId)
       .subscribe(
-        posts => this.posts = posts,
+        posts => {
+          this.posts = posts;
+          this.pagedPosts = this.getPostsInPage(1);
+        },
         () => null,
         () => { this.postsLoading = false; }
       );
+  }
+
+  onPageChanged(page) {
+    this.pagedPosts = this.getPostsInPage(page);
+  }
+
+  private getPostsInPage(page) {
+    let result = [];
+    let startingIndex = (page - 1) * this.pageSize;
+    let endIndex = Math.min(startingIndex + this.pageSize, this.posts.length);
+
+    for (let i = startingIndex; i < endIndex; i++) {
+      result.push(this.posts[i]);
+    }
+
+    return result;
   }
 
   select(post) {
