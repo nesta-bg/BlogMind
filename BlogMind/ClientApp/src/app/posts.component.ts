@@ -5,6 +5,7 @@ import { CommentService } from './comment.service';
 import { Comment } from './comment';
 import { UserService } from './user.service';
 import { User } from './user';
+import * as _ from 'underscore';
 
 @Component({
   templateUrl: './posts.component.html',
@@ -42,7 +43,7 @@ export class PostsComponent implements OnInit {
     this.postService.getPosts()
       .subscribe(
         posts => { this.posts = posts,
-        this.pagedPosts = this.getPostsInPage(1);
+        this.pagedPosts = _.take(this.posts, this.pageSize);
         },
         () => null,
         () => { this.postsLoading = false; }
@@ -67,7 +68,7 @@ export class PostsComponent implements OnInit {
       .subscribe(
         posts => {
           this.posts = posts;
-          this.pagedPosts = this.getPostsInPage(1);
+          this.pagedPosts = _.take(this.posts, this.pageSize);
         },
         () => null,
         () => { this.postsLoading = false; }
@@ -75,19 +76,8 @@ export class PostsComponent implements OnInit {
   }
 
   onPageChanged(page) {
-    this.pagedPosts = this.getPostsInPage(page);
-  }
-
-  private getPostsInPage(page) {
-    let result = [];
-    let startingIndex = (page - 1) * this.pageSize;
-    let endIndex = Math.min(startingIndex + this.pageSize, this.posts.length);
-
-    for (let i = startingIndex; i < endIndex; i++) {
-      result.push(this.posts[i]);
-    }
-
-    return result;
+    let startIndex = (page - 1) * this.pageSize;
+    this.pagedPosts = _.take(_.rest(this.posts, startIndex), this.pageSize);
   }
 
   select(post) {
