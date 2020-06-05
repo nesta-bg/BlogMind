@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { UserService } from './user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User, Address } from './user';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   templateUrl: './user-form.component.html'
@@ -15,11 +16,21 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
   title: string;
   id: string;
 
-  constructor(fb: FormBuilder, private service: UserService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    fb: FormBuilder,
+    private service: UserService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastr: ToastrService) {
     this.userForm = fb.group({
       name: ['', Validators.required],
       email: ['', BasicValidators.email],
       phoneNumber: [''],
+      userName: ['', Validators.required],
+      passwords: fb.group({
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required]
+      }, { validator: this.comparePasswords }),
       address: fb.group({
         street: [''],
         suite: [''],
@@ -27,6 +38,19 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
         zipcode: ['']
       })
     });
+  }
+
+  comparePasswords(fb: FormGroup) {
+    let confirmPswrdCtrl = fb.get('confirmPassword');
+    // passwordMismatch
+    // confirmPswrdCtrl.errors={passwordMismatch:true}
+    if (confirmPswrdCtrl.errors == null || 'passwordMismatch' in confirmPswrdCtrl.errors) {
+      if (fb.get('password').value !== confirmPswrdCtrl.value) {
+        confirmPswrdCtrl.setErrors({ passwordMismatch: true });
+      } else {
+        confirmPswrdCtrl.setErrors(null);
+      }
+    }
   }
 
   ngOnInit() {
@@ -45,7 +69,8 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
           if (response.status === 404) {
             this.router.navigate(['not-found']);
           }
-        });
+        }
+      );
   }
 
   editUser(user: User) {
@@ -70,35 +95,39 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     return true;
   }
 
-  // save() {
-  //   if (this.id) {
-  //     this.service.updateUser(this.id, this.userForm.value)
-  //       .subscribe(x => {
-  //         this.userForm.markAsPristine();
-  //         this.router.navigate(['users']);
-  //       });
-  //   } else {
-  //     this.service.addUser(this.userForm.value)
-  //       .subscribe(x => {
-  //         this.userForm.markAsPristine();
-  //         this.router.navigate(['users']);
-  //       });
-  //   }
-  // }
-
   save() {
     let result;
 
     if (this.id) {
-      result = this.service.updateUser(this.id, this.userForm.value);
+      result = this.service.updateUser(this.id, this.userForm);
     } else {
-      result = this.service.addUser(this.userForm.value);
+      result = this.service.addUser(this.userForm);
     }
 
-    result.subscribe(x => {
-      this.userForm.markAsPristine();
-      this.router.navigate(['users']);
-    });
+    result.subscribe(
+      (x: any) => {
+        if (x.succeeded) {
+          this.toastr.success('New user created!', 'Registration successful.');
+          this.userForm.markAsPristine();
+          this.router.navigate(['users']);
+        } else {
+          x.errors.forEach(element => {
+            switch (element.code) {
+              case 'DuplicateUserName':
+                this.toastr.error('Username is already taken', 'Registration failed.');
+                break;
+
+              default:
+                this.toastr.error(element.description, 'Registration failed.');
+                break;
+            }
+          });
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
 }

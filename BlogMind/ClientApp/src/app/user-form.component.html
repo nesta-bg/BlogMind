@@ -14,7 +14,8 @@
         <div class="form-group">
             <label for="email"><strong>Email</strong></label>
             <input id="email" type="text" class="form-control" formControlName="email" required>
-            <div *ngIf="userForm.get('email').invalid && (userForm.get('email').dirty || userForm.get('email').touched)" class="alert alert-danger">
+            <div *ngIf="userForm.get('email').invalid && (userForm.get('email').dirty || userForm.get('email').touched)"
+                class="alert alert-danger">
                 <div *ngIf="userForm.get('email').errors.required">
                     Email is required.
                 </div>
@@ -27,6 +28,47 @@
             <label for="phone"><strong>Phone</strong></label>
             <input id="phone" type="text" class="form-control" formControlName="phoneNumber">
         </div>
+        <div class="form-group">
+            <label for="userName"><strong>Username</strong></label>
+            <input id="userName" class="form-control" formControlName="userName" required>
+            <div *ngIf="userForm.get('userName').invalid && userForm.get('userName').touched"
+                class="alert alert-danger">
+                <div *ngIf="userForm.get('userName').errors?.required">
+                    UserName is required.
+                </div>
+            </div>
+        </div>
+        <div formGroupName="passwords">
+            <div class="form-group">
+                <label for="password"><strong>Password</strong></label>
+                <input id="password" type="password" class="form-control" formControlName="password" required>
+                <div *ngIf="userForm.get('passwords.password').invalid && userForm.get('passwords.password').touched"
+                    class="alert alert-danger">
+                    <div *ngIf="userForm.get('passwords.password').errors?.required">
+                        This field is mandatory.
+                    </div>
+                    <div *ngIf="userForm.get('passwords.password').errors?.minlength">
+                        Minimum {{ userForm.get('passwords.password').errors.minlength.requiredLength }} characters
+                        required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword"><strong>Confirm Password</strong></label>
+                <input id="confirmPassword" type="password" class="form-control" formControlName="confirmPassword"
+                    required>
+                <div *ngIf="userForm.get('passwords.confirmPassword').invalid && userForm.get('passwords.confirmPassword').touched"
+                    class="alert alert-danger">
+                    <div *ngIf="userForm.get('passwords.confirmPassword').errors?.required">
+                        This field is mandatory.
+                    </div>
+                    <div *ngIf="userForm.get('passwords.confirmPassword').errors?.passwordMismatch">
+                        Confirm Password does not match.
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div formGroupName="address">
             <div class="form-group">
