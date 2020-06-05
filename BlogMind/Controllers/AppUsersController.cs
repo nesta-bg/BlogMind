@@ -2,8 +2,10 @@
 using BlogMind.Controllers.Resources;
 using BlogMind.Models;
 using BlogMind.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,11 +16,13 @@ namespace BlogMind.Controllers
     {
         private readonly BlogDbContext context;
         private readonly IMapper mapper;
+        private readonly UserManager<AppUser> userManager;
 
-        public AppUsersController(BlogDbContext context, IMapper mapper)
+        public AppUsersController(BlogDbContext context, IMapper mapper, UserManager<AppUser> userManager)
         {
             this.context = context;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         [HttpGet("{id}")]
@@ -54,16 +58,15 @@ namespace BlogMind.Controllers
 
             var appuser = mapper.Map<AppUserResource, AppUser>(appuserResource);
 
-            context.AppUsers.Add(appuser);
-            await context.SaveChangesAsync();
-
-            appuser = await context.AppUsers
-                .Include(u => u.Address)
-                .SingleOrDefaultAsync(u => u.Id == appuser.Id);
-
-            var result = mapper.Map<AppUser, AppUserResource>(appuser);
-
-            return Ok(result);
+            try
+            {
+                var result = await this.userManager.CreateAsync(appuser, appuserResource.Password);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPut("{id}")]
