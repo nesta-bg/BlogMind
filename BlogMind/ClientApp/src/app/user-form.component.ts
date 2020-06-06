@@ -22,22 +22,22 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService) {
-    this.userForm = fb.group({
-      name: ['', Validators.required],
-      email: ['', BasicValidators.email],
-      phoneNumber: [''],
-      userName: ['', Validators.required],
-      passwords: fb.group({
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', Validators.required]
-      }, { validator: this.comparePasswords }),
-      address: fb.group({
-        street: [''],
-        suite: [''],
-        city: [''],
-        zipcode: ['']
-      })
-    });
+      this.userForm = fb.group({
+        name: ['', Validators.required],
+        email: ['', BasicValidators.email],
+        phoneNumber: [''],
+        userName: ['', Validators.required],
+        passwords: fb.group({
+          password: ['', [Validators.required, Validators.minLength(6)]],
+          confirmPassword: ['', Validators.required]
+        }, { validator: this.comparePasswords }),
+        address: fb.group({
+          street: [''],
+          suite: [''],
+          city: [''],
+          zipcode: ['']
+        })
+      });
   }
 
   comparePasswords(fb: FormGroup) {
@@ -61,6 +61,8 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
       return;
     }
 
+    this.userForm.get('userName').disable();
+    this.userForm.get('passwords').disable();
     this.service.getUser(this.id)
       .subscribe(
         (user: User) => this.editUser(user),
@@ -74,7 +76,7 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   editUser(user: User) {
-    this.userForm.setValue({
+    this.userForm.patchValue({
       name: user.name,
       email: user.email,
       phoneNumber: user.phoneNumber,
@@ -96,38 +98,43 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   save() {
-    let result;
-
     if (this.id) {
-      result = this.service.updateUser(this.id, this.userForm);
-    } else {
-      result = this.service.addUser(this.userForm);
-    }
-
-    result.subscribe(
-      (x: any) => {
-        if (x.succeeded) {
-          this.toastr.success('New user created!', 'Registration successful.');
+      this.service.updateUser(this.id, this.userForm.value)
+        .subscribe(x => {
+          this.toastr.success('User\'s details updated!', 'Updating successful.');
           this.userForm.markAsPristine();
           this.router.navigate(['users']);
-        } else {
-          x.errors.forEach(element => {
-            switch (element.code) {
-              case 'DuplicateUserName':
-                this.toastr.error('Username is already taken', 'Registration failed.');
-                break;
+        },
+        err => {
+          console.log(err);
+        });
+    } else {
+      this.service.addUser(this.userForm)
+      .subscribe(
+        (x: any) => {
+          if (x.succeeded) {
+            this.toastr.success('New user created!', 'Registration successful.');
+            this.userForm.markAsPristine();
+            this.router.navigate(['users']);
+          } else {
+            x.errors.forEach(element => {
+              switch (element.code) {
+                case 'DuplicateUserName':
+                  this.toastr.error('Username is already taken', 'Registration failed.');
+                  break;
 
-              default:
-                this.toastr.error(element.description, 'Registration failed.');
-                break;
-            }
-          });
+                default:
+                  this.toastr.error(element.description, 'Registration failed.');
+                  break;
+              }
+            });
+          }
+        },
+        err => {
+          console.log(err);
         }
-      },
-      err => {
-        console.log(err);
-      }
-    );
+      );
+    }
   }
 
 }
