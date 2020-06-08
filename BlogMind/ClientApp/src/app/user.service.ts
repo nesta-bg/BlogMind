@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private url = 'https://localhost:44394/api/appusers';
+  isLoggedInSubject: Subject<boolean> = new Subject();
 
   private getUserUrl(userId) {
     return this.url + '/' + userId;
@@ -51,5 +53,8 @@ export class UserService {
     return this.httpClient.post(this.url + '/Login', formData);
   }
 
+  isLoggedIn(val: boolean) {
+    this.isLoggedInSubject.next(val);
+  }
 }
 
