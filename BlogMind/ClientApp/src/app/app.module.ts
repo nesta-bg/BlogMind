@@ -17,6 +17,7 @@ import { NotFoundComponent } from './not-found.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { PhotosComponent } from './photos.component';
 import { PaginationComponent } from './shared/pagination.component';
+import { LoginComponent } from './login.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { PaginationComponent } from './shared/pagination.component';
     NotFoundComponent,
     SpinnerComponent,
     PhotosComponent,
-    PaginationComponent
+    PaginationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

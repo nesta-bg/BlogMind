@@ -46,5 +46,10 @@ export class UserService {
   deleteUser(userId) {
     return this.httpClient.delete(this.getUserUrl(userId));
   }
+
+  login(formData) {
+    return this.httpClient.post(this.url + '/Login', formData);
+  }
+
 }
 

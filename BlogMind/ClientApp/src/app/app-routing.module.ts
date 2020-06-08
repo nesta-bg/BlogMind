@@ -9,6 +9,7 @@ import { NotFoundComponent } from './not-found.component';
 import { PhotosComponent } from './photos.component';
 
 import { CanDeactivateGuardService } from './can-deactivate-guard.service';
+import { LoginComponent } from './login.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
         component: UserFormComponent,
         canDeactivate: [ CanDeactivateGuardService ]
     },
+    { path: 'login', component: LoginComponent },
     { path: 'posts', component: PostsComponent },
     { path: 'users/:id/photo', component: PhotosComponent},
     { path: 'not-found', component: NotFoundComponent },
