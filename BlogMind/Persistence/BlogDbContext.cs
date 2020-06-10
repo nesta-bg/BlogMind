@@ -12,6 +12,8 @@ namespace BlogMind.Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Favorite> Favorites { get; set; }
+
         public BlogDbContext(DbContextOptions<BlogDbContext> options)
             : base(options)
         {
@@ -77,7 +79,19 @@ namespace BlogMind.Persistence
                 .WithMany(p => p.Comments)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Favorite>()
+               .HasKey(f => new { f.PostId, f.AppUserId });
 
+            builder.Entity<Favorite>()
+                .HasOne(f => f.Post)
+                .WithMany(p => p.Favorites)
+                .HasForeignKey(f => f.PostId);
+
+            builder.Entity<Favorite>()
+                .HasOne(f => f.AppUser)
+                .WithMany(u => u.Favorites)
+                .HasForeignKey(f => f.AppUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

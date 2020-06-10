@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BlogMind.Models
 {
@@ -13,5 +15,12 @@ namespace BlogMind.Models
         public Company Company { get; set; }
 
         public string Photo { get; set; }
+
+        public ICollection<Favorite> Favorites { get; set; }
+
+        public AppUser()
+        {
+            Favorites = new Collection<Favorite>();
+        }
     }
 }
