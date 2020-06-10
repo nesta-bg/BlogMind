@@ -18,6 +18,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { PhotosComponent } from './photos.component';
 import { PaginationComponent } from './shared/pagination.component';
 import { LoginComponent } from './login.component';
+import { FavoriteComponent } from './favorite.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { LoginComponent } from './login.component';
     SpinnerComponent,
     PhotosComponent,
     PaginationComponent,
-    LoginComponent
+    LoginComponent,
+    FavoriteComponent
   ],
   imports: [
     BrowserModule,

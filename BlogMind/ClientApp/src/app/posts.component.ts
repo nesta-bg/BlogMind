@@ -22,10 +22,19 @@ export class PostsComponent implements OnInit {
   commentsLoading;
   users: User[] = [];
 
+  post = {
+    title: 'Title',
+    isFavorite: true
+  };
+
   constructor(
     private postService: PostService,
     private commentService: CommentService,
     private userService: UserService) { }
+
+  onFavoriteChange($event) {
+    console.log($event);
+  }
 
   ngOnInit() {
     this.loadUsers();
