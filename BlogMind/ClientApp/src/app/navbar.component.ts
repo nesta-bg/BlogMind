@@ -5,10 +5,17 @@ import { UserService } from './user.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styles: []
+  styles: [`
+    .loggeduser {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #fff;
+    }
+  `]
 })
 export class NavbarComponent implements OnInit {
   loggedIn = false;
+  loggedInUser = {};
 
   constructor(private router: Router, private userService: UserService) { }
 
@@ -16,7 +23,20 @@ export class NavbarComponent implements OnInit {
     this.userService.isLoggedInSubject
       .subscribe(status => {
         this.loggedIn = status;
-    });
+        this.getUser();
+      });
+  }
+
+  getUser() {
+    this.userService.getLoggedInUser()
+      .subscribe(
+        res => {
+          this.loggedInUser = res;
+        },
+        err => {
+          console.log(err);
+        },
+      );
   }
 
   onLogout() {

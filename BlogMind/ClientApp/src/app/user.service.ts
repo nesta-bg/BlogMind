@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from './user';
 import { Subject } from 'rxjs';
 
@@ -18,6 +18,11 @@ export class UserService {
 
   getUser(userId) {
     return this.httpClient.get<User>(this.getUserUrl(userId));
+  }
+
+  getLoggedInUser() {
+    let tokenHeader = new HttpHeaders({Authorization: 'Bearer ' + localStorage.getItem('token') });
+    return this.httpClient.get(this.url + '/LoggedInUser', {headers: tokenHeader});
   }
 
   getUsers() {

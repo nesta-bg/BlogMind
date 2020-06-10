@@ -2,6 +2,7 @@
 using BlogMind.Controllers.Resources;
 using BlogMind.Models;
 using BlogMind.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,12 +94,11 @@ namespace BlogMind.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserID", user.Id)
+                        new Claim("UserID", user.Id.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.authSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                 };
-
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(securityToken);
@@ -105,6 +106,17 @@ namespace BlogMind.Controllers
             }
             else
                 return BadRequest(new { message = "Username or password is incorrect." });
+        }
+
+        [HttpGet]
+        [Route("LoggedInUser")]
+        [Authorize]
+        public async Task<Object> GetLoggedInUser()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var appuser = await this.userManager.FindByIdAsync(userId);
+
+            return this.mapper.Map<AppUser, AppUserResource>(appuser);
         }
 
         [HttpPut("{id}")]
