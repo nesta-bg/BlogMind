@@ -32,7 +32,7 @@ namespace BlogMind.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IEnumerable<PostResource>> GetPostByUser(string id)
+        public async Task<IEnumerable<PostResource>> GetPostsByUser(string id)
         {
             var posts = await context.Posts
                 .Where(p => p.AppUserId == id)
