@@ -14,34 +14,20 @@ import { UserService } from './user.service';
   `]
 })
 export class NavbarComponent implements OnInit {
-  loggedIn = false;
-  loggedInUser = {};
+  loggedInUser = null;
 
   constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.isLoggedInSubject
-      .subscribe(status => {
-        this.loggedIn = status;
-        this.getUser();
+    this.userService.currentUserSubject
+      .subscribe(user => {
+        this.loggedInUser = user;
       });
-  }
-
-  getUser() {
-    this.userService.getLoggedInUser()
-      .subscribe(
-        res => {
-          this.loggedInUser = res;
-        },
-        err => {
-          console.log(err);
-        },
-      );
   }
 
   onLogout() {
     localStorage.removeItem('token');
-    this.loggedIn = false;
+    this.loggedInUser = null;
     this.router.navigate(['users']);
   }
 

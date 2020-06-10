@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 })
 export class UserService {
   private url = 'https://localhost:44394/api/appusers';
-  isLoggedInSubject: Subject<boolean> = new Subject();
+  currentUserSubject: Subject<any> = new Subject();
 
   private getUserUrl(userId) {
     return this.url + '/' + userId;
@@ -58,8 +58,8 @@ export class UserService {
     return this.httpClient.post(this.url + '/Login', formData);
   }
 
-  isLoggedIn(val: boolean) {
-    this.isLoggedInSubject.next(val);
+  loggedUser(val) {
+    this.currentUserSubject.next(val);
   }
 }
 

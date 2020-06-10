@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     this.service.login(this.loginForm.value)
       .subscribe((res: any) => {
         localStorage.setItem('token', res.token);
-        this.service.isLoggedIn(true);
+        this.getUser();
         this.router.navigateByUrl('posts');
       },
       err => {
@@ -40,6 +40,18 @@ export class LoginComponent implements OnInit {
         }
       }
     );
+  }
+
+  getUser() {
+    this.service.getLoggedInUser()
+      .subscribe(
+        res => {
+          this.service.loggedUser(res);
+        },
+        err => {
+          console.log(err);
+        },
+      );
   }
 
 }

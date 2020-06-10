@@ -21,6 +21,7 @@ export class PostsComponent implements OnInit {
   comments: Comment[] = [];
   commentsLoading;
   users: User[] = [];
+  loggedInUser = null;
 
   post = {
     title: 'Title',
@@ -37,8 +38,16 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getLoggedUser();
     this.loadUsers();
     this.loadPosts();
+  }
+
+  getLoggedUser() {
+    this.userService.currentUserSubject
+      .subscribe(user => {
+        this.loggedInUser = user;
+      });
   }
 
   loadUsers() {
