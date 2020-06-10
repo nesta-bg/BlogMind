@@ -4,6 +4,7 @@ import { PostService } from './post.service';
 import { CommentService } from './comment.service';
 import { Comment } from './comment';
 import { UserService } from './user.service';
+import { FavoriteService } from './favorite.service';
 import { User } from './user';
 import * as _ from 'underscore';
 
@@ -22,16 +23,13 @@ export class PostsComponent implements OnInit {
   commentsLoading;
   users: User[] = [];
   loggedInUser = null;
-
-  post = {
-    title: 'Title',
-    isFavorite: true
-  };
+  isPostUserFavorite;
 
   constructor(
     private postService: PostService,
     private commentService: CommentService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private favoriteService: FavoriteService) { }
 
   onFavoriteChange($event) {
     console.log($event);
@@ -100,6 +98,11 @@ export class PostsComponent implements OnInit {
 
   select(post) {
     this.currentPost = post;
+
+    if (this.loggedInUser != null) {
+      this.favoriteService.isPostUserFavorite(this.currentPost.id, this.loggedInUser.id)
+      .subscribe(isFavorite => this.isPostUserFavorite = isFavorite);
+    }
 
     this.commentsLoading = true;
 

@@ -17,7 +17,7 @@
     <div class="col">
         <div *ngIf="currentPost" class="card">
             <div class="card-header">
-                <app-favorite [isFavorite]="post.isFavorite" (change)="onFavoriteChange($event)"></app-favorite>
+                <app-favorite [isFavorite]="isPostUserFavorite" (change)="onFavoriteChange($event)"></app-favorite>
                 {{ currentPost.title }}
             </div>
             <ul class="list-group list-group-flush">
