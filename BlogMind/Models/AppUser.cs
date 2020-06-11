@@ -18,9 +18,12 @@ namespace BlogMind.Models
 
         public ICollection<Favorite> Favorites { get; set; }
 
+        public ICollection<Like> Likes { get; set; }
+
         public AppUser()
         {
             Favorites = new Collection<Favorite>();
+            Likes = new Collection<Like>();
         }
     }
 }
