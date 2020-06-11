@@ -12,6 +12,7 @@ namespace BlogMind.Mapping
             CreateMap<Address, AddressResource>();
             CreateMap<Post, PostResource>();
             CreateMap<Comment, CommentResource>();
+            CreateMap<Like, LikeResource>();
 
             CreateMap<AppUserResource, AppUser>()
                 .ForMember(u => u.Id, opt => opt.Ignore());

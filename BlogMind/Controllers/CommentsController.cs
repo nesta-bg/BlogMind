@@ -27,6 +27,7 @@ namespace BlogMind.Controllers
         {
             var comments = await context.Comments
                 .Include(c => c.AppUser)
+                .Include(c => c.Likes)
                 .Where(c => c.PostId == id)
                 .ToListAsync();
 
