@@ -19,6 +19,7 @@ import { PhotosComponent } from './photos.component';
 import { PaginationComponent } from './shared/pagination.component';
 import { LoginComponent } from './login.component';
 import { FavoriteComponent } from './favorite.component';
+import { LikeComponent } from './like.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { FavoriteComponent } from './favorite.component';
     PhotosComponent,
     PaginationComponent,
     LoginComponent,
-    FavoriteComponent
+    FavoriteComponent,
+    LikeComponent,
   ],
   imports: [
     BrowserModule,

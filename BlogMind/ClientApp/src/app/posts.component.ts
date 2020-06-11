@@ -25,11 +25,20 @@ export class PostsComponent implements OnInit {
   loggedInUser = null;
   isPostUserFavorite;
 
+  userComment = {
+    totalLikes: 10,
+    iLike: true
+  };
+
   constructor(
     private postService: PostService,
     private commentService: CommentService,
     private userService: UserService,
     private favoriteService: FavoriteService) { }
+
+  onLikeChange($event) {
+    console.log($event);
+  }
 
   ngOnInit() {
     if (localStorage.getItem('token')) {
