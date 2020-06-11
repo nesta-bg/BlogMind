@@ -13,6 +13,14 @@ export class FavoriteService {
     return this.httpClient.get(this.url + '/' + postId + '/' + userId);
   }
 
+  makePostUserFavorite(postId, userId) {
+    return this.httpClient.post(this.url + '/' + postId + '/' + userId, postId, userId);
+  }
+
+  removePostUserFavorite(postId, userId) {
+    return this.httpClient.delete(this.url + '/' + postId + '/' + userId);
+  }
+
 }
 
 

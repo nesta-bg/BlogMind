@@ -17,7 +17,7 @@
     <div class="col">
         <div *ngIf="currentPost" class="card">
             <div class="card-header">
-                <app-favorite [isFavorite]="isPostUserFavorite" (change)="onFavoriteChange($event)"></app-favorite>
+                <app-favorite *ngIf="this.loggedInUser" [isFavorite]="isPostUserFavorite" (change)="onFavoriteChange($event)"></app-favorite>
                 {{ currentPost.title }}
             </div>
             <ul class="list-group list-group-flush">
@@ -28,10 +28,9 @@
                 <img [src]="comment.appUser.photo ? userImgUrl + comment.appUser.photo : userImgUrl + 'no-image.png'"
                     alt="" class="mr-3 mt-3 rounded-circle thumbnail">
                 <div class="media-body">
-                    <i>
-                        <h5 class="handle">
-                            {{ comment.appUser.userName ? comment.appUser.userName : comment.appUser.email }}</h5>
-                    </i>
+                    <h5 class="handle">
+                        {{ comment.appUser.userName }}
+                    </h5>
                     <p>{{ comment.body }}</p>
                 </div>
             </div>

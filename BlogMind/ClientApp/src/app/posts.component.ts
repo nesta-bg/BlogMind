@@ -31,18 +31,16 @@ export class PostsComponent implements OnInit {
     private userService: UserService,
     private favoriteService: FavoriteService) { }
 
-  onFavoriteChange($event) {
-    console.log($event);
-  }
-
   ngOnInit() {
-    this.getLoggedUser();
+    if (localStorage.getItem('token')) {
+      this.getLoggedUser();
+    }
     this.loadUsers();
     this.loadPosts();
   }
 
   getLoggedUser() {
-    this.userService.currentUserSubject
+    this.userService.getLoggedInUser()
       .subscribe(user => {
         this.loggedInUser = user;
       });
@@ -101,7 +99,7 @@ export class PostsComponent implements OnInit {
 
     if (this.loggedInUser != null) {
       this.favoriteService.isPostUserFavorite(this.currentPost.id, this.loggedInUser.id)
-      .subscribe(isFavorite => this.isPostUserFavorite = isFavorite);
+        .subscribe(isFavorite => this.isPostUserFavorite = isFavorite);
     }
 
     this.commentsLoading = true;
@@ -112,6 +110,18 @@ export class PostsComponent implements OnInit {
         () => null,
         () => { this.commentsLoading = false; }
       );
+  }
+
+  onFavoriteChange($event) {
+    if ($event.newValue == true) {
+      this.favoriteService.makePostUserFavorite(this.currentPost.id, this.loggedInUser.id)
+        .subscribe(x => console.log(x));
+      this.isPostUserFavorite = true;
+    } else {
+      this.favoriteService.removePostUserFavorite(this.currentPost.id, this.loggedInUser.id)
+        .subscribe(x => console.log(x));
+      this.isPostUserFavorite = false;
+    }
   }
 }
 
