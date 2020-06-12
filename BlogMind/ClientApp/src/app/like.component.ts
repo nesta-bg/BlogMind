@@ -23,6 +23,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class LikeComponent {
   @Input() iLike = false;
   @Input() totalLikes = 0;
+  @Input() commentId = 0;
   @Output() change = new EventEmitter();
 
   onClick() {
@@ -30,6 +31,6 @@ export class LikeComponent {
       let like = this.iLike ? 1 : -1;
       this.totalLikes += like;
 
-      this.change.emit({ newValue: like });
+      this.change.emit({ newValue: like, commentId: this.commentId });
   }
 }

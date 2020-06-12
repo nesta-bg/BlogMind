@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { FavoriteService } from './favorite.service';
 import { User } from './user';
 import * as _ from 'underscore';
+import { LikeService } from './like.service';
 
 @Component({
   templateUrl: './posts.component.html',
@@ -29,11 +30,8 @@ export class PostsComponent implements OnInit {
     private postService: PostService,
     private commentService: CommentService,
     private userService: UserService,
-    private favoriteService: FavoriteService) { }
-
-  onLikeChange($event) {
-    console.log($event);
-  }
+    private favoriteService: FavoriteService,
+    private likeService: LikeService) { }
 
   ngOnInit() {
     if (localStorage.getItem('token')) {
@@ -134,6 +132,16 @@ export class PostsComponent implements OnInit {
       return true;
     } else {
       return false;
+    }
+  }
+
+  onLikeChange($event) {
+    if ($event.newValue == 1) {
+      this.likeService.addLike($event.commentId, this.loggedInUser.id)
+        .subscribe(x => console.log(x));
+    } else if ($event.newValue == -1) {
+      this.likeService.deleteLike($event.commentId, this.loggedInUser.id)
+        .subscribe(x => console.log(x));
     }
   }
 

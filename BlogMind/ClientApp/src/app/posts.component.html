@@ -32,7 +32,8 @@
                         {{ comment.appUser.userName }}
                     </h5>
                     <p>{{ comment.body }}</p>
-                    <app-like *ngIf="this.loggedInUser" [totalLikes]="comment.likes?.length" [iLike]="isUserLikeComment(comment)" (change)="onLikeChange($event)"></app-like>
+                    <app-like *ngIf="this.loggedInUser" [totalLikes]="comment.likes?.length" [iLike]="isUserLikeComment(comment)" 
+                        [commentId]="comment.id" (change)="onLikeChange($event)"></app-like>
                 </div>
             </div>
         </div>
