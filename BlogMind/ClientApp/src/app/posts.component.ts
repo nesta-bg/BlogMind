@@ -25,11 +25,6 @@ export class PostsComponent implements OnInit {
   loggedInUser = null;
   isPostUserFavorite;
 
-  userComment = {
-    totalLikes: 10,
-    iLike: true
-  };
-
   constructor(
     private postService: PostService,
     private commentService: CommentService,
@@ -132,5 +127,15 @@ export class PostsComponent implements OnInit {
       this.isPostUserFavorite = false;
     }
   }
+
+  isUserLikeComment(comment: Comment) {
+    let data = comment.likes.find(ob => ob.appUserId == this.loggedInUser.id);
+    if (data) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
 
