@@ -26,6 +26,15 @@ export class PostsComponent implements OnInit {
   loggedInUser = null;
   isPostUserFavorite;
 
+  stack = {
+    voteCount: 100,
+    myVote: 0
+  };
+
+  onVote($event) {
+    console.log($event);
+  }
+
   constructor(
     private postService: PostService,
     private commentService: CommentService,

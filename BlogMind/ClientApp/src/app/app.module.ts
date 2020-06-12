@@ -20,6 +20,7 @@ import { PaginationComponent } from './shared/pagination.component';
 import { LoginComponent } from './login.component';
 import { FavoriteComponent } from './favorite.component';
 import { LikeComponent } from './like.component';
+import { VoterComponent } from './voter.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { LikeComponent } from './like.component';
     LoginComponent,
     FavoriteComponent,
     LikeComponent,
+    VoterComponent,
   ],
   imports: [
     BrowserModule,
