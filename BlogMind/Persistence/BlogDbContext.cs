@@ -16,6 +16,8 @@ namespace BlogMind.Persistence
 
         public DbSet<Like> Likes { get; set; }
 
+        public DbSet<Vote> Votes { get; set; }
+
         public BlogDbContext(DbContextOptions<BlogDbContext> options)
             : base(options)
         {
@@ -108,7 +110,21 @@ namespace BlogMind.Persistence
                 .HasOne(l => l.AppUser)
                 .WithMany(u => u.Likes)
                 .HasForeignKey(l => l.AppUserId);
-                //.OnDelete(DeleteBehavior.Restrict);
+            //.OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Vote>()
+              .HasKey(v => new { v.PostId, v.AppUserId });
+
+            builder.Entity<Vote>()
+                .HasOne(v => v.Post)
+                .WithMany(p => p.Votes)
+                .HasForeignKey(v => v.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Vote>()
+                .HasOne(v => v.AppUser)
+                .WithMany(u => u.Votes)
+                .HasForeignKey(v => v.AppUserId);
         }
     }
 }
