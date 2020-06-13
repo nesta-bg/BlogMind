@@ -32,7 +32,7 @@ namespace BlogMind.Controllers
         }
 
         [HttpGet("{postId}/{userId}")]
-        public async Task<IActionResult> GetVotesCountExcludingUser(int postId, string userId)
+        public async Task<IActionResult> GetVoteCountExcludingUser(int postId, string userId)
         {
             var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
             var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);

@@ -21,7 +21,7 @@
                 {{ currentPost.title }}
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ currentPost.body }} <app-voter [voteCount]="stack.voteCount" [myVote]="stack.myVote" (vote)="onVote($event)"></app-voter></li>
+                <li class="list-group-item">{{ currentPost.body }} <app-voter [voteCount]="voteCount" [myVote]="userVote" (vote)="onVote($event)"></app-voter></li>
             </ul>
             <app-spinner [visible]="commentsLoading"></app-spinner>
             <div *ngFor="let comment of comments" class="media border p-3">

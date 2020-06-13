@@ -8,6 +8,8 @@ import { FavoriteService } from './favorite.service';
 import { User } from './user';
 import * as _ from 'underscore';
 import { LikeService } from './like.service';
+import { VoteService } from './vote.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   templateUrl: './posts.component.html',
@@ -25,11 +27,8 @@ export class PostsComponent implements OnInit {
   users: User[] = [];
   loggedInUser = null;
   isPostUserFavorite;
-
-  stack = {
-    voteCount: 100,
-    myVote: 0
-  };
+  userVote = 0;
+  voteCount = 0;
 
   onVote($event) {
     console.log($event);
@@ -40,7 +39,8 @@ export class PostsComponent implements OnInit {
     private commentService: CommentService,
     private userService: UserService,
     private favoriteService: FavoriteService,
-    private likeService: LikeService) { }
+    private likeService: LikeService,
+    private voteService: VoteService) { }
 
   ngOnInit() {
     if (localStorage.getItem('token')) {
@@ -121,6 +121,32 @@ export class PostsComponent implements OnInit {
         () => null,
         () => { this.commentsLoading = false; }
       );
+
+    forkJoin(this.voteService.getUserVote(this.currentPost.id, this.loggedInUser.id), this.voteService.getVoteCountExcludingUser(this.currentPost.id, this.loggedInUser.id))
+      .subscribe({
+        next: (res: any) => {
+          this.userVote = res[0],
+          this.voteCount = res[1];
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      });
+
+    // this is how it would looks like with client side logic
+    // userVote(post: Post) {
+    //   const data = post.votes.find(ob => ob.userId === this.loggedInUser.id);
+    //   if (data) {
+    //     return data.mark;
+    //   } else {
+    //     return 0;
+    //   }
+    // }
+
+    // voteCount(post: Post) {
+    //   return  post.votes.filter(ob => ob.mark).reduce((sum, current) => sum + current.mark, 0);
+    // }
+
   }
 
   onFavoriteChange($event) {
