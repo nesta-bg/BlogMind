@@ -37,18 +37,19 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class VoterComponent {
   @Input() voteCount = 0;
   @Input() myVote = 0;
+  @Input() postId = 0;
   @Output() vote = new EventEmitter();
 
   upVote() {
-      if (this.myVote != 1) {
-          this.myVote += 1;
-          this.vote.emit({ myVote: this.myVote });
-      }
+    if (this.myVote != 1) {
+      this.myVote += 1;
+      this.vote.emit({ myVote: this.myVote, postId: this.postId });
+    }
   }
   downVote() {
-      if (this.myVote != -1) {
-          this.myVote -= 1;
-          this.vote.emit({ myVote: this.myVote });
-      }
+    if (this.myVote != -1) {
+      this.myVote -= 1;
+      this.vote.emit({ myVote: this.myVote, postId: this.postId });
+    }
   }
 }

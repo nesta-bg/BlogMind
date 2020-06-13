@@ -30,10 +30,6 @@ export class PostsComponent implements OnInit {
   userVote = 0;
   voteCount = 0;
 
-  onVote($event) {
-    console.log($event);
-  }
-
   constructor(
     private postService: PostService,
     private commentService: CommentService,
@@ -122,16 +118,18 @@ export class PostsComponent implements OnInit {
         () => { this.commentsLoading = false; }
       );
 
-    forkJoin(this.voteService.getUserVote(this.currentPost.id, this.loggedInUser.id), this.voteService.getVoteCountExcludingUser(this.currentPost.id, this.loggedInUser.id))
-      .subscribe({
-        next: (res: any) => {
-          this.userVote = res[0],
-          this.voteCount = res[1];
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      });
+    if (this.loggedInUser != null) {
+      forkJoin(this.voteService.getUserVote(this.currentPost.id, this.loggedInUser.id), this.voteService.getVoteCountExcludingUser(this.currentPost.id, this.loggedInUser.id))
+        .subscribe({
+          next: (res: any) => {
+            this.userVote = res[0],
+              this.voteCount = res[1];
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        });
+    }
 
     // this is how it would looks like with client side logic
     // userVote(post: Post) {
@@ -177,6 +175,18 @@ export class PostsComponent implements OnInit {
     } else if ($event.newValue == -1) {
       this.likeService.deleteLike($event.commentId, this.loggedInUser.id)
         .subscribe(x => console.log(x));
+    }
+  }
+
+  onVote($event) {
+    if ($event.myVote == 0) {
+      this.voteService.deleteUserVote($event.postId, this.loggedInUser.id)
+        .subscribe(x => console.log(x));
+      this.userVote = 0;
+    } else {
+      this.voteService.addUserVote($event.postId, this.loggedInUser.id, $event.myVote)
+        .subscribe(x => console.log(x));
+      this.userVote = $event.myVote;
     }
   }
 

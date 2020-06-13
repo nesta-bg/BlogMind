@@ -16,5 +16,14 @@ export class VoteService {
   getVoteCountExcludingUser(postId, userId) {
     return this.httpClient.get(this.url + '/' + postId + '/' + userId);
   }
+
+  addUserVote(postId, userId, mark) {
+    return this.httpClient.post(this.url + '/' + postId + '/' + userId + '/' + mark, postId, userId);
+  }
+
+  deleteUserVote(postId, userId) {
+    return this.httpClient.delete(this.url + '/' + postId + '/' + userId);
+  }
+
 }
 
