@@ -3,9 +3,7 @@ using BlogMind.Controllers.Resources;
 using BlogMind.Models;
 using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogMind.Controllers
@@ -13,20 +11,19 @@ namespace BlogMind.Controllers
     [Route("api/[controller]")]
     public class PostsController : Controller
     {
-        private readonly BlogDbContext context;
         private readonly IMapper mapper;
+        private readonly IPostRepository repository;
 
-        public PostsController(BlogDbContext context, IMapper mapper)
+        public PostsController(IMapper mapper, IPostRepository repository)
         {
-            this.context = context;
             this.mapper = mapper;
+            this.repository = repository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<PostResource>> GetPosts()
         {
-            var posts = await context.Posts
-                .ToListAsync();
+            var posts = await repository.GetPosts();
 
             return mapper.Map<List<Post>, List<PostResource>>(posts);
         }
@@ -34,9 +31,7 @@ namespace BlogMind.Controllers
         [HttpGet("{id}")]
         public async Task<IEnumerable<PostResource>> GetPostsByUser(string id)
         {
-            var posts = await context.Posts
-                .Where(p => p.AppUserId == id)
-                .ToListAsync();
+            var posts = await repository.GetPostsByUser(id);
 
             return mapper.Map<List<Post>, List<PostResource>>(posts);
         }

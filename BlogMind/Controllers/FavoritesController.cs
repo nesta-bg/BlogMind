@@ -1,7 +1,6 @@
 ﻿using BlogMind.Models;
 using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace BlogMind.Controllers
@@ -10,22 +9,33 @@ namespace BlogMind.Controllers
     public class FavoritesController : Controller
     {
         private readonly BlogDbContext context;
+        private readonly IAppUserRepository appUserRepository;
+        private readonly IFavoriteRepository favoriteRepository;
+        private readonly IPostRepository postRepository;
 
-        public FavoritesController(BlogDbContext context)
+        public FavoritesController(
+            BlogDbContext context, 
+            IAppUserRepository appUserRepository, 
+            IFavoriteRepository favoriteRepository,
+            IPostRepository postRepository
+            )
         {
             this.context = context;
+            this.appUserRepository = appUserRepository;
+            this.favoriteRepository = favoriteRepository;
+            this.postRepository = postRepository;
         }
 
         [HttpGet("{postid}/{userId}")]
         public async Task<IActionResult> IsPostUserFavorite(int postId, string userId)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
 
             if (post == null || user == null)
                 return NotFound();
 
-            var favorite = await context.Favorites.SingleOrDefaultAsync(f => f.PostId == postId && f.AppUserId == userId);
+            var favorite = await favoriteRepository.GetFavorite(postId, userId);
 
             if (favorite == null)
                 return Ok(false);
@@ -36,13 +46,13 @@ namespace BlogMind.Controllers
         [HttpPost("{postid}/{userId}")]
         public async Task<IActionResult> MakePostUserFavorite(int postId, string userId)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
 
             if (post == null || user == null)
                 return NotFound();
 
-            var favorite = await context.Favorites.SingleOrDefaultAsync(f => f.PostId == postId && f.AppUserId == userId);
+            var favorite = await favoriteRepository.GetFavorite(postId, userId);
 
             if (favorite != null)
             {
@@ -64,9 +74,9 @@ namespace BlogMind.Controllers
         [HttpDelete("{postid}/{userId}")]
         public async Task<IActionResult> RemovePostUserFavorite(int postId, string userId)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
-            var favorite = await context.Favorites.SingleOrDefaultAsync(f => f.PostId == postId && f.AppUserId == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
+            var favorite = await favoriteRepository.GetFavorite(postId, userId);
 
             if (post == null || user == null || favorite == null)
                 return NotFound();
