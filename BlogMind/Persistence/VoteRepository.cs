@@ -27,5 +27,15 @@ namespace BlogMind.Persistence
                 .Where(v => v.PostId == postId && v.AppUserId != userId)
                 .Sum(v => v.Mark);
         }
+
+        public void Add(Vote vote)
+        {
+            context.Add(vote);
+        }
+
+        public void Remove(Vote vote)
+        {
+            context.Remove(vote);
+        }
     }
 }

@@ -47,7 +47,7 @@ namespace BlogMind.Controllers
                 AppUserId = userId
             };
 
-            context.Likes.Add(newLike);
+            likeRepository.Add(newLike);
             await context.SaveChangesAsync();
 
             return Ok(comment.Id);
@@ -63,7 +63,7 @@ namespace BlogMind.Controllers
             if (comment == null || user == null || like == null)
                 return NotFound();
 
-            context.Likes.Remove(like);
+            likeRepository.Remove(like);
             await context.SaveChangesAsync();
 
             return Ok(comment.Id);

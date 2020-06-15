@@ -143,7 +143,7 @@ namespace BlogMind.Controllers
             if (appuser == null)
                 return NotFound();
 
-            context.AppUsers.Remove(appuser);
+            repository.Remove(appuser);
             await context.SaveChangesAsync();
 
             //return Ok(id);

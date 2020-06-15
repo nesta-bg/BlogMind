@@ -18,5 +18,15 @@ namespace BlogMind.Persistence
             return await context.Favorites
                 .SingleOrDefaultAsync(f => f.PostId == postId && f.AppUserId == userId);
         }
+
+        public void Add(Favorite favorite)
+        {
+            context.Add(favorite);
+        }
+
+        public void Remove(Favorite favorite)
+        {
+            context.Remove(favorite);
+        }
     }
 }

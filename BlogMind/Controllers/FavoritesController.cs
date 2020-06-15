@@ -65,7 +65,7 @@ namespace BlogMind.Controllers
                 AppUserId = userId
             };
 
-            context.Favorites.Add(newFavorite);
+            favoriteRepository.Add(newFavorite);
             await context.SaveChangesAsync();
 
             return Ok(postId);
@@ -81,7 +81,7 @@ namespace BlogMind.Controllers
             if (post == null || user == null || favorite == null)
                 return NotFound();
 
-            context.Favorites.Remove(favorite);
+            favoriteRepository.Remove(favorite);
             await context.SaveChangesAsync();
 
             return Ok(postId);

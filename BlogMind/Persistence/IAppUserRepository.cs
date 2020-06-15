@@ -11,6 +11,8 @@ namespace BlogMind.Persistence
         Task<AppUser> GetUserWithAddress(string id);
 
         Task<List<AppUser>> GetUsersWithAddresses();
+
+        void Remove(AppUser appUser);
     }
 }
 

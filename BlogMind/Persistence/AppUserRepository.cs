@@ -33,5 +33,10 @@ namespace BlogMind.Persistence
                 .Include(u => u.Address)
                 .ToListAsync();
         }
+
+        public void Remove(AppUser appUser)
+        {
+            context.Remove(appUser);
+        }
     }
 }

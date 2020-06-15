@@ -18,5 +18,15 @@ namespace BlogMind.Persistence
             return await context.Likes
                 .SingleOrDefaultAsync(l => l.CommentId == commentId && l.AppUserId == userId);
         }
+
+        public void Add(Like like)
+        {
+            context.Add(like);
+        }
+
+        public void Remove(Like like)
+        {
+            context.Remove(like);
+        }
     }
 }
