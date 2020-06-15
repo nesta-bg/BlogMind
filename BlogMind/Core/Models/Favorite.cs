@@ -1,11 +1,13 @@
-﻿namespace BlogMind.Models
+﻿namespace BlogMind.Core.Models
 {
-    public class Vote
+    public class Favorite
     {
         public int PostId { get; set; }
+
         public Post Post { get; set; }
+
         public string AppUserId { get; set; }
+
         public AppUser AppUser { get; set; }
-        public int Mark { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BlogMind.Controllers.Resources;
-using BlogMind.Models;
-using BlogMind.Persistence;
+using BlogMind.Core;
+using BlogMind.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +29,7 @@ namespace BlogMind.Controllers
         private readonly IUnitOfWork unitOfWork;
 
         public AppUsersController(
-            IMapper mapper, 
+            IMapper mapper,
             UserManager<AppUser> userManager,
             IOptions<AuthSettings> authSettings,
             IAppUserRepository repository,

@@ -1,4 +1,4 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlogMind.Controllers.Resources;
-using BlogMind.Models;
+using BlogMind.Core.Models;
 
 namespace BlogMind.Mapping
 {

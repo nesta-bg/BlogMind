@@ -1,4 +1,5 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core;
+using BlogMind.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

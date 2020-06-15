@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BlogMind.Controllers.Resources;
-using BlogMind.Models;
-using BlogMind.Persistence;
+using BlogMind.Core;
+using BlogMind.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

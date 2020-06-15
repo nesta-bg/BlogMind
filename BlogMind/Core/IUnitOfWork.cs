@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BlogMind.Persistence
+namespace BlogMind.Core
 {
     public interface IUnitOfWork
     {

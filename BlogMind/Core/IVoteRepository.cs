@@ -1,4 +1,4 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core.Models;
 using System;
 using System.Threading.Tasks;
 

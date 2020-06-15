@@ -1,7 +1,7 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core.Models;
 using System.Threading.Tasks;
 
-namespace BlogMind.Persistence
+namespace BlogMind.Core
 {
     public interface IFavoriteRepository
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace BlogMind.Models
+namespace BlogMind.Core.Models
 {
     public class Comment
     {

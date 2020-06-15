@@ -1,8 +1,8 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlogMind.Persistence
+namespace BlogMind.Core
 {
     public interface IAppUserRepository
     {

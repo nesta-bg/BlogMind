@@ -1,4 +1,4 @@
-﻿namespace BlogMind.Models
+﻿namespace BlogMind.Core.Models
 {
     public class Geo
     {

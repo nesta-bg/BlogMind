@@ -1,4 +1,5 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core;
+using BlogMind.Core.Models;
 using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

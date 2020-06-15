@@ -1,4 +1,4 @@
-﻿using BlogMind.Models;
+﻿using BlogMind.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using BlogMind.Core;
+using System.Threading.Tasks;
 
 namespace BlogMind.Persistence
 {

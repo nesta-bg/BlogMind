@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace BlogMind.Models
+namespace BlogMind.Core.Models
 {
     public class PhotoSettings
     {
