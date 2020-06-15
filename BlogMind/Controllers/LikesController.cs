@@ -8,21 +8,21 @@ namespace BlogMind.Controllers
     [Route("api/[controller]")]
     public class LikesController : Controller
     {
-        private readonly BlogDbContext context;
         private readonly IAppUserRepository appUserRepository;
         private readonly ICommentRepository commentRepository;
         private readonly ILikeRepository likeRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         public LikesController(
-            BlogDbContext context,
             IAppUserRepository appUserRepository,
             ICommentRepository commentRepository,
-            ILikeRepository likeRepository)
+            ILikeRepository likeRepository,
+            IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.appUserRepository = appUserRepository;
             this.commentRepository = commentRepository;
             this.likeRepository = likeRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost("{commentId}/{userId}")]
@@ -48,7 +48,7 @@ namespace BlogMind.Controllers
             };
 
             likeRepository.Add(newLike);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(comment.Id);
         }
@@ -64,7 +64,7 @@ namespace BlogMind.Controllers
                 return NotFound();
 
             likeRepository.Remove(like);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(comment.Id);
         }

@@ -3,7 +3,6 @@ using BlogMind.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
@@ -14,21 +13,22 @@ namespace BlogMind.Controllers
     [Route("/api/appusers/{appuserId}/photo")]
     public class PhotosController : Controller
     {
-        private readonly BlogDbContext context;
         private readonly IHostingEnvironment host;
         private readonly PhotoSettings photoSettings;
         private readonly IAppUserRepository appUserRepository;
+        private readonly IUnitOfWork unitOfWork;
+
 
         public PhotosController(
-            BlogDbContext context, 
-            IHostingEnvironment host, 
+            IHostingEnvironment host,
             IOptionsSnapshot<PhotoSettings> options,
-            IAppUserRepository appUserRepository)
+            IAppUserRepository appUserRepository,
+            IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.host = host;
             this.photoSettings = options.Value;
             this.appUserRepository = appUserRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -58,7 +58,7 @@ namespace BlogMind.Controllers
             }
 
             appuser.Photo = fileName;
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok();
         }
@@ -73,18 +73,19 @@ namespace BlogMind.Controllers
 
             var fileName = appuser.Photo;
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
-            
+
             var filePath = Path.Combine(uploadsFolderPath, fileName);
 
             var fileInfo = new FileInfo(filePath);
 
-            if (fileInfo != null) {
+            if (fileInfo != null)
+            {
                 System.IO.File.Delete(filePath);
                 fileInfo.Delete();
             }
-            
+
             appuser.Photo = null;
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok();
         }

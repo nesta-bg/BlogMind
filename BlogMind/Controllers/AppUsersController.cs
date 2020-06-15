@@ -22,24 +22,24 @@ namespace BlogMind.Controllers
     [ApiController]
     public class AppUsersController : ControllerBase
     {
-        private readonly BlogDbContext context;
         private readonly IMapper mapper;
         private readonly UserManager<AppUser> userManager;
         private readonly AuthSettings authSettings;
         private readonly IAppUserRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
         public AppUsersController(
-            BlogDbContext context, 
             IMapper mapper, 
             UserManager<AppUser> userManager,
             IOptions<AuthSettings> authSettings,
-            IAppUserRepository repository)
+            IAppUserRepository repository,
+            IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.mapper = mapper;
             this.userManager = userManager;
             this.authSettings = authSettings.Value;
             this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet("{id}")]
@@ -130,7 +130,7 @@ namespace BlogMind.Controllers
                 return NotFound();
 
             mapper.Map(appuserResource, appuser);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(mapper.Map<AppUser, AppUserResource>(appuser));
         }
@@ -144,7 +144,7 @@ namespace BlogMind.Controllers
                 return NotFound();
 
             repository.Remove(appuser);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             //return Ok(id);
             //Trying to Parse a String

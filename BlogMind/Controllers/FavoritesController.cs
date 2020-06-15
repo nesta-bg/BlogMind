@@ -8,22 +8,22 @@ namespace BlogMind.Controllers
     [Route("api/[controller]")]
     public class FavoritesController : Controller
     {
-        private readonly BlogDbContext context;
         private readonly IAppUserRepository appUserRepository;
         private readonly IFavoriteRepository favoriteRepository;
         private readonly IPostRepository postRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         public FavoritesController(
-            BlogDbContext context, 
             IAppUserRepository appUserRepository, 
             IFavoriteRepository favoriteRepository,
-            IPostRepository postRepository
+            IPostRepository postRepository,
+            IUnitOfWork unitOfWork
             )
         {
-            this.context = context;
             this.appUserRepository = appUserRepository;
             this.favoriteRepository = favoriteRepository;
             this.postRepository = postRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet("{postid}/{userId}")]
@@ -66,7 +66,7 @@ namespace BlogMind.Controllers
             };
 
             favoriteRepository.Add(newFavorite);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(postId);
         }
@@ -82,7 +82,7 @@ namespace BlogMind.Controllers
                 return NotFound();
 
             favoriteRepository.Remove(favorite);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(postId);
         }

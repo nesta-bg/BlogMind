@@ -8,21 +8,21 @@ namespace BlogMind.Controllers
     [Route("api/[controller]")]
     public class VotesController : Controller
     {
-        private readonly BlogDbContext context;
         private readonly IAppUserRepository appUserRepository;
         private readonly IPostRepository postRepository;
         private readonly IVoteRepository voteRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         public VotesController(
-            BlogDbContext context,
             IAppUserRepository appUserRepository,
             IPostRepository postRepository,
-            IVoteRepository voteRepository)
+            IVoteRepository voteRepository,
+            IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.appUserRepository = appUserRepository;
             this.postRepository = postRepository;
             this.voteRepository = voteRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet("{postId}/user/{userId}")]
@@ -78,8 +78,8 @@ namespace BlogMind.Controllers
                 Mark = mark
             };
 
-            context.Votes.Add(newVote);
-            await context.SaveChangesAsync();
+            voteRepository.Add(newVote);
+            await unitOfWork.CompleteAsync();
 
             return Ok(newVote.PostId);
         }
@@ -94,8 +94,8 @@ namespace BlogMind.Controllers
             if (post == null || user == null || vote == null)
                 return NotFound();
 
-            context.Votes.Remove(vote);
-            await context.SaveChangesAsync();
+            voteRepository.Remove(vote);
+            await unitOfWork.CompleteAsync();
 
             return Ok(postId);
         }

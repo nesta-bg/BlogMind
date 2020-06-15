@@ -50,6 +50,8 @@ namespace BlogMind
 
             services.AddScoped<IVoteRepository, VoteRepository>();
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;
