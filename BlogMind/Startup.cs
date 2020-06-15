@@ -46,6 +46,10 @@ namespace BlogMind
 
             services.AddScoped<IPostRepository, PostRepository>();
 
+            services.AddScoped<ILikeRepository, LikeRepository>();
+
+            services.AddScoped<IVoteRepository, VoteRepository>();
+
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;

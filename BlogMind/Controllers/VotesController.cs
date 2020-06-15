@@ -1,8 +1,6 @@
 ﻿using BlogMind.Models;
 using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogMind.Controllers
@@ -11,22 +9,32 @@ namespace BlogMind.Controllers
     public class VotesController : Controller
     {
         private readonly BlogDbContext context;
+        private readonly IAppUserRepository appUserRepository;
+        private readonly IPostRepository postRepository;
+        private readonly IVoteRepository voteRepository;
 
-        public VotesController(BlogDbContext context)
+        public VotesController(
+            BlogDbContext context,
+            IAppUserRepository appUserRepository,
+            IPostRepository postRepository,
+            IVoteRepository voteRepository)
         {
             this.context = context;
+            this.appUserRepository = appUserRepository;
+            this.postRepository = postRepository;
+            this.voteRepository = voteRepository;
         }
 
         [HttpGet("{postId}/user/{userId}")]
         public async Task<IActionResult> GetUserVote(int postId, string userId)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
-            var vote = await context.Votes.SingleOrDefaultAsync(v => v.PostId == postId && v.AppUserId == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
+            var vote = await voteRepository.GetVote(postId, userId);
 
-            if (post == null || user == null) 
+            if (post == null || user == null)
                 return NotFound();
-            else if (vote == null) 
+            else if (vote == null)
                 return Ok(0);
             else
                 return Ok(vote.Mark);
@@ -35,13 +43,13 @@ namespace BlogMind.Controllers
         [HttpGet("{postId}/{userId}")]
         public async Task<IActionResult> GetVoteCountExcludingUser(int postId, string userId)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
 
             if (post == null || user == null)
                 return NotFound();
 
-            var count = context.Votes.Where(v => v.PostId == postId && v.AppUserId != userId).Sum(v => v.Mark);
+            var count = voteRepository.GetVoteCount(postId, userId);
 
             return Ok(count);
         }
@@ -50,13 +58,13 @@ namespace BlogMind.Controllers
         [HttpPost("{postId}/{userId}/{mark}")]
         public async Task<IActionResult> AddUserVote(int postId, string userId, int mark)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
 
             if (post == null || user == null)
                 return NotFound();
 
-            var vote = await context.Votes.SingleOrDefaultAsync(v => v.PostId == postId && v.AppUserId == userId);
+            var vote = await voteRepository.GetVote(postId, userId);
 
             if (vote != null)
             {
@@ -79,9 +87,9 @@ namespace BlogMind.Controllers
         [HttpDelete("{postId}/{userId}")]
         public async Task<IActionResult> DeleteUserVote(int postId, string userId)
         {
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
-            var vote = await context.Votes.SingleOrDefaultAsync(v => v.PostId == postId && v.AppUserId == userId);
+            var post = await postRepository.GetPost(postId);
+            var user = await appUserRepository.GetUser(userId);
+            var vote = await voteRepository.GetVote(postId, userId);
 
             if (post == null || user == null || vote == null)
                 return NotFound();

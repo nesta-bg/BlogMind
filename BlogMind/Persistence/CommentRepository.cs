@@ -15,6 +15,12 @@ namespace BlogMind.Persistence
             this.context = context;
         }
 
+        public async Task<Comment> GetComment(int id)
+        {
+            return await context.Comments
+                .SingleOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<List<Comment>> GetCommentsByPost(int id)
         {
             return await context.Comments

@@ -17,18 +17,24 @@ namespace BlogMind.Controllers
         private readonly BlogDbContext context;
         private readonly IHostingEnvironment host;
         private readonly PhotoSettings photoSettings;
+        private readonly IAppUserRepository appUserRepository;
 
-        public PhotosController(BlogDbContext context, IHostingEnvironment host, IOptionsSnapshot<PhotoSettings> options)
+        public PhotosController(
+            BlogDbContext context, 
+            IHostingEnvironment host, 
+            IOptionsSnapshot<PhotoSettings> options,
+            IAppUserRepository appUserRepository)
         {
             this.context = context;
             this.host = host;
             this.photoSettings = options.Value;
+            this.appUserRepository = appUserRepository;
         }
 
         [HttpPost]
         public async Task<IActionResult> Upload(string appuserId, IFormFile file)
         {
-            var appuser = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == appuserId);
+            var appuser = await appUserRepository.GetUser(appuserId);
 
             if (appuser == null)
                 return NotFound();
@@ -60,7 +66,7 @@ namespace BlogMind.Controllers
         [HttpPut]
         public async Task<IActionResult> Delete(string appuserId)
         {
-            var appuser = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == appuserId);
+            var appuser = await appUserRepository.GetUser(appuserId);
 
             if (appuser == null)
                 return NotFound();

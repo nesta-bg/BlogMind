@@ -1,7 +1,6 @@
 ﻿using BlogMind.Models;
 using BlogMind.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace BlogMind.Controllers
@@ -10,22 +9,32 @@ namespace BlogMind.Controllers
     public class LikesController : Controller
     {
         private readonly BlogDbContext context;
+        private readonly IAppUserRepository appUserRepository;
+        private readonly ICommentRepository commentRepository;
+        private readonly ILikeRepository likeRepository;
 
-        public LikesController(BlogDbContext context)
+        public LikesController(
+            BlogDbContext context,
+            IAppUserRepository appUserRepository,
+            ICommentRepository commentRepository,
+            ILikeRepository likeRepository)
         {
             this.context = context;
+            this.appUserRepository = appUserRepository;
+            this.commentRepository = commentRepository;
+            this.likeRepository = likeRepository;
         }
 
         [HttpPost("{commentId}/{userId}")]
         public async Task<IActionResult> AddLike(int commentId, string userId)
         {
-            var comment = await context.Comments.SingleOrDefaultAsync(c => c.Id == commentId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
+            var comment = await commentRepository.GetComment(commentId);
+            var user = await appUserRepository.GetUser(userId);
 
             if (comment == null || user == null)
                 return NotFound();
 
-            var like = await context.Likes.SingleOrDefaultAsync(l => l.CommentId == commentId && l.AppUserId == userId);
+            var like = await likeRepository.GetLike(commentId, userId);
 
             if (like != null)
             {
@@ -47,9 +56,9 @@ namespace BlogMind.Controllers
         [HttpDelete("{commentId}/{userId}")]
         public async Task<IActionResult> DeleteLike(int commentId, string userId)
         {
-            var comment = await context.Comments.SingleOrDefaultAsync(c => c.Id == commentId);
-            var user = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
-            var like = await context.Likes.SingleOrDefaultAsync(l => l.CommentId == commentId && l.AppUserId == userId);
+            var comment = await commentRepository.GetComment(commentId);
+            var user = await appUserRepository.GetUser(userId);
+            var like = await likeRepository.GetLike(commentId, userId);
 
             if (comment == null || user == null || like == null)
                 return NotFound();
