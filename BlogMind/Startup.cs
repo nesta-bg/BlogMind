@@ -38,6 +38,10 @@ namespace BlogMind
 
             services.AddDefaultIdentity<AppUser>().AddEntityFrameworkStores<BlogDbContext>();
 
+            services.AddScoped<IAppUserRepository, AppUserRepository>();
+
+            services.AddScoped<ICommentRepository, CommentRepository>();
+
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;

@@ -5,7 +5,6 @@ using BlogMind.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -15,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace BlogMind.Controllers
 {
@@ -26,25 +26,26 @@ namespace BlogMind.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<AppUser> userManager;
         private readonly AuthSettings authSettings;
+        private readonly IAppUserRepository repository;
 
         public AppUsersController(
             BlogDbContext context, 
             IMapper mapper, 
             UserManager<AppUser> userManager,
-            IOptions<AuthSettings> authSettings)
+            IOptions<AuthSettings> authSettings,
+            IAppUserRepository repository)
         {
             this.context = context;
             this.mapper = mapper;
             this.userManager = userManager;
             this.authSettings = authSettings.Value;
+            this.repository = repository;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
-            var appuser = await context.AppUsers
-                .Include(u => u.Address)
-                .SingleOrDefaultAsync(u => u.Id == id);
+            var appuser = await repository.GetUserWithAddress(id);
 
             if (appuser == null)
                 return NotFound();
@@ -57,9 +58,7 @@ namespace BlogMind.Controllers
         [HttpGet]
         public async Task<IEnumerable<AppUserResource>> GetUsers()
         {
-            var appusers = await context.AppUsers
-                .Include(u => u.Address)
-                .ToListAsync();
+            var appusers = await repository.GetUsersWithAddresses();
 
             return mapper.Map<List<AppUser>, List<AppUserResource>>(appusers);
         }
@@ -125,9 +124,7 @@ namespace BlogMind.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var appuser = await context.AppUsers
-                .Include(u => u.Address)
-                .SingleOrDefaultAsync(u => u.Id == id);
+            var appuser = await repository.GetUserWithAddress(id);
 
             if (appuser == null)
                 return NotFound();
@@ -141,7 +138,7 @@ namespace BlogMind.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            var appuser = await context.AppUsers.SingleOrDefaultAsync(u => u.Id == id);
+            var appuser = await repository.GetUser(id);
 
             if (appuser == null)
                 return NotFound();
