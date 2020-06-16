@@ -55,6 +55,8 @@ namespace BlogMind
 
             services.AddTransient<IPhotoService, PhotoService>();
 
+            services.AddTransient<IPhotoStorage, FileSystemPhotoStorage>();
+
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;
