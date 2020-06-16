@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home.component';
-import { UsersComponent } from './users.component';
-import { PostsComponent } from './posts.component';
-import { UserFormComponent } from './user-form.component';
-import { NotFoundComponent } from './not-found.component';
-import { PhotosComponent } from './photos.component';
+import { HomeComponent } from './home/home.component';
+import { UsersComponent } from './users/users.component';
+import { PostsComponent } from './posts/posts.component';
+import { UserFormComponent } from './user-form/user-form.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { PhotosComponent } from './photos/photos.component';
 
-import { CanDeactivateGuardService } from './can-deactivate-guard.service';
-import { LoginComponent } from './login.component';
+import { CanDeactivateGuardService } from './shared/can-deactivate-guard.service';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },

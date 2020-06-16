@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BasicValidators } from './shared/basicValidators';
-import { CanComponentDeactivate } from './can-deactivate-guard.service';
+import { BasicValidators } from '../shared/basicValidators';
+import { CanComponentDeactivate } from '../shared/can-deactivate-guard.service';
 import { Observable } from 'rxjs';
-import { UserService } from './services/user.service';
+import { UserService } from '../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User, Address } from './models/user';
+import { User, Address } from '../models/user';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
