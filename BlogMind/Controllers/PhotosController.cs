@@ -15,6 +15,7 @@ namespace BlogMind.Controllers
     {
         private readonly IHostingEnvironment host;
         private readonly PhotoSettings photoSettings;
+        private readonly IPhotoService photoService;
         private readonly IAppUserRepository appUserRepository;
         private readonly IUnitOfWork unitOfWork;
 
@@ -22,11 +23,13 @@ namespace BlogMind.Controllers
         public PhotosController(
             IHostingEnvironment host,
             IOptionsSnapshot<PhotoSettings> options,
+            IPhotoService photoService,
             IAppUserRepository appUserRepository,
             IUnitOfWork unitOfWork)
         {
             this.host = host;
             this.photoSettings = options.Value;
+            this.photoService = photoService;
             this.appUserRepository = appUserRepository;
             this.unitOfWork = unitOfWork;
         }
@@ -45,21 +48,8 @@ namespace BlogMind.Controllers
             if (!photoSettings.IsSupported(file.FileName)) return BadRequest("Invalid file type.");
 
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
-
-            if (!Directory.Exists(uploadsFolderPath))
-                Directory.CreateDirectory(uploadsFolderPath);
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadsFolderPath, fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            appuser.Photo = fileName;
-            await unitOfWork.CompleteAsync();
-
+            await photoService.UploadPhoto(appuser, file, uploadsFolderPath);
+            
             return Ok();
         }
 

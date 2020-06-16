@@ -53,6 +53,8 @@ namespace BlogMind
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddTransient<IPhotoService, PhotoService>();
+
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;
