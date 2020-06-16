@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -21,6 +21,7 @@ import { LoginComponent } from './login.component';
 import { FavoriteComponent } from './favorite.component';
 import { LikeComponent } from './like.component';
 import { VoterComponent } from './voter.component';
+import { AppErrorHandler } from './app.error-handler';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,10 @@ import { VoterComponent } from './voter.component';
       progressAnimation: 'increasing'
     })
   ],
-  providers: [CanDeactivateGuardService],
+  providers: [
+    CanDeactivateGuardService,
+    { provide: ErrorHandler, useClass: AppErrorHandler }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
