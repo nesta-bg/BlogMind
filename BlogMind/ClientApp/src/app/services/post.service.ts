@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Post } from '../post';
+import { Post } from '../models/post';
 import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 

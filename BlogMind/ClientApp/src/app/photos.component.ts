@@ -3,7 +3,7 @@ import { PhotoService } from './services/photo.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from './services/user.service';
-import { User } from './user';
+import { User } from './models/user';
 
 @Component({
   template: `

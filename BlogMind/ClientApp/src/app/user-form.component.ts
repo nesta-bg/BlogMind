@@ -5,7 +5,7 @@ import { CanComponentDeactivate } from './can-deactivate-guard.service';
 import { Observable } from 'rxjs';
 import { UserService } from './services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User, Address } from './user';
+import { User, Address } from './models/user';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

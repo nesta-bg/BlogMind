@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { OnChanges } from '@angular/core';
-import { Post } from '../post';
+import { Post } from '../models/post';
 
 @Component({
   selector: 'app-pagination',

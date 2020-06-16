@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Comment } from '../comment';
+import { Comment } from '../models/comment';
 import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
