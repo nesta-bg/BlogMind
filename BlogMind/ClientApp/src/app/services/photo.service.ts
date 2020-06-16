@@ -2,19 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
-  private url = 'https://localhost:44394/api/appusers';
+  private readonly myAppUrl: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.myAppUrl = environment.appUrl;
+  }
 
   upload(userId, photo) {
     let formData = new FormData();
     formData.append('file', photo);
-    return this.httpClient.post(this.url + '/' + userId + '/photo', formData)
+    return this.httpClient.post(this.myAppUrl + 'api/appusers/' + userId + '/photo', formData)
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -22,7 +25,7 @@ export class PhotoService {
   }
 
   delete(userId) {
-    return this.httpClient.put(this.url + '/' + userId + '/photo', userId)
+    return this.httpClient.put(this.myAppUrl + 'api/appusers/' + userId + '/photo', userId)
       .pipe(
         retry(3),
         catchError(this.handleError)

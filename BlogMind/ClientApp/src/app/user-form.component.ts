@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BasicValidators } from './shared/basicValidators';
 import { CanComponentDeactivate } from './can-deactivate-guard.service';
 import { Observable } from 'rxjs';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User, Address } from './user';
 import { ToastrService } from 'ngx-toastr';

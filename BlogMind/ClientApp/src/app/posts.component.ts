@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from './post';
-import { PostService } from './post.service';
-import { CommentService } from './comment.service';
+import { PostService } from './services/post.service';
+import { CommentService } from './services/comment.service';
 import { Comment } from './comment';
-import { UserService } from './user.service';
-import { FavoriteService } from './favorite.service';
+import { UserService } from './services/user.service';
+import { FavoriteService } from './services/favorite.service';
 import { User } from './user';
 import * as _ from 'underscore';
-import { LikeService } from './like.service';
-import { VoteService } from './vote.service';
+import { LikeService } from './services/like.service';
+import { VoteService } from './services/vote.service';
 import { forkJoin } from 'rxjs';
 
 @Component({

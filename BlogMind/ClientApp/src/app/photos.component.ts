@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { PhotoService } from './photo.service';
+import { PhotoService } from './services/photo.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { User } from './user';
 
 @Component({
